@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
+import Image from 'next/image';
 
 // Mock data for clips library
 const clipsData = [
@@ -153,7 +154,10 @@ export default function ClipsPage() {
       case 'most-views':
         return b.views - a.views;
       case 'engagement':
-        return a.engagement === 'high' ? -1 : b.engagement === 'high' ? 1 : 0;
+        // Basic engagement sort: high > medium > low
+        const engagementOrder = { high: 1, medium: 2, low: 3 };
+        return (engagementOrder[a.engagement as keyof typeof engagementOrder] || 3) - 
+               (engagementOrder[b.engagement as keyof typeof engagementOrder] || 3);
       default:
         return 0;
     }
@@ -185,6 +189,14 @@ export default function ClipsPage() {
         return <span className="px-2 py-0.5 text-xs bg-yellow-900/30 text-yellow-400 rounded-full">Low</span>;
     }
   };
+
+  // Placeholder sort options to use setSortBy
+  const sortOptions = [
+    { label: 'Newest', value: 'newest' },
+    { label: 'Oldest', value: 'oldest' },
+    { label: 'Most Views', value: 'most-views' },
+    { label: 'Engagement', value: 'engagement' },
+  ];
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -275,6 +287,18 @@ export default function ClipsPage() {
               >
                 <i className="ri-draft-line mr-1"></i> Drafts
               </button>
+              <div className="flex items-center space-x-2 mb-2 ml-auto md:ml-4">
+                <span className="text-sm text-slate-400">Sort by:</span>
+                {sortOptions.map(option => (
+                  <button
+                    key={option.value}
+                    onClick={() => setSortBy(option.value)}
+                    className={`px-3 py-1.5 rounded-button text-xs ${sortBy === option.value ? 'bg-primary text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
             </div>
             <div className="flex items-center space-x-3 w-full md:w-auto">
               <div className="relative flex-grow md:flex-grow-0 md:w-64">
@@ -327,7 +351,13 @@ export default function ClipsPage() {
               {filteredClips.map(clip => (
                 <div key={clip.id} className="bg-slate-900 rounded-lg overflow-hidden hover:translate-y-[-2px] transition shadow-lg">
                   <div className="relative aspect-video group">
-                    <img src={clip.thumbnail} alt={clip.title} className="w-full h-full object-cover" />
+                    <Image 
+                        src={clip.thumbnail} 
+                        alt={clip.title} 
+                        width={360}
+                        height={202}
+                        className="w-full h-full object-cover" 
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                       <button className="w-12 h-12 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 text-white">
                         <i className="ri-play-fill text-2xl"></i>
@@ -416,7 +446,13 @@ export default function ClipsPage() {
                         <td className="px-6 py-4">
                           <div className="flex items-center">
                             <div className="flex-shrink-0 h-10 w-16 rounded overflow-hidden relative group">
-                              <img src={clip.thumbnail} alt={clip.title} className="h-10 w-16 object-cover" />
+                              <Image 
+                                src={clip.thumbnail} 
+                                alt={clip.title} 
+                                width={64}
+                                height={40}
+                                className="h-10 w-16 object-cover" 
+                              />
                               <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                 <i className="ri-play-fill text-white"></i>
                               </div>

@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useRef } from 'react';
-import { UploadArea } from './UploadArea';
-import type { UploadItem, VideoUrlFetchResult, UploadStatus } from '@/types/types';
+import Image from 'next/image'; // Import Next Image
+import type { UploadItem } from '@/types/types';
 import { Spinner } from '@/components/shared/Spinner'; // Import Spinner for loading states
 
 interface VideoUploadCardProps {
@@ -55,7 +55,7 @@ export const VideoUploadCard: React.FC<VideoUploadCardProps> = ({
     id, file, videoUrl, title, thumbnailUrl, duration, 
     audioFile, 
     status, progress, errorMessage,
-    showAddAudioLink, wantsSeparateAudio // Added these UI states
+    showAddAudioLink // Removed unused wantsSeparateAudio
   } = item;
   
   const audioDisplayName = audioFile?.name; 
@@ -150,7 +150,12 @@ export const VideoUploadCard: React.FC<VideoUploadCardProps> = ({
             ) : videoUrl ? (
                 <div className={`rounded overflow-hidden ${title === 'Fetch Failed' ? 'bg-red-900/30' : 'bg-slate-800'}`}> 
                     {thumbnailUrl && title !== 'Fetch Failed' && (
-                        <img src={thumbnailUrl} alt="Video thumbnail" className="w-full h-20 object-cover opacity-80" /> 
+                        <Image 
+                          src={thumbnailUrl} 
+                          alt="Video thumbnail" 
+                          layout="fill"
+                          objectFit="cover"
+                          className="w-full h-20 object-cover opacity-80" /> 
                     )}
                     <div className="p-3 text-sm">
                         <div className="flex items-center">

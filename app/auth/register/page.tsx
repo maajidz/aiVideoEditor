@@ -33,7 +33,8 @@ export default function RegisterPage() {
       // For demo purposes, just redirect to login
       router.push('/auth/login');
     } catch (err) {
-      setError('Registration failed. Please try again.');
+      console.error("Registration failed:", err);
+      setError('Failed to create account. Please try again.');
     } finally {
       setIsLoading(false);
     }

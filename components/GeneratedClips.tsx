@@ -1,7 +1,14 @@
 import Link from 'next/link';
 import ClipCard from './ClipCard';
+import { Platform } from '@/types/types'; // Import the Platform type
 
-// Placeholder data
+// Placeholder data for Platform objects
+const samplePlatforms: { [key: string]: Platform } = {
+  YouTube: { id: 'yt', name: 'YouTube', icon: 'ri-youtube-fill', aspectRatio: '16:9', type: 'long' },
+  Instagram: { id: 'ig', name: 'Instagram', icon: 'ri-instagram-fill', aspectRatio: '9:16', type: 'short' },
+  TikTok: { id: 'tt', name: 'TikTok', icon: 'ri-tiktok-fill', aspectRatio: '9:16', type: 'short' },
+};
+
 const placeholderClips = [
   {
     id: 'clip1',
@@ -9,7 +16,7 @@ const placeholderClips = [
     duration: '1:45',
     thumbnailUrl: '/placeholder-image.svg',
     views: '1.2K',
-    platform: 'YouTube',
+    platform: samplePlatforms.YouTube, // Use Platform object
   },
   {
     id: 'clip2',
@@ -17,7 +24,7 @@ const placeholderClips = [
     duration: '0:58',
     thumbnailUrl: '/placeholder-image.svg',
     views: '3.4K',
-    platform: 'Instagram',
+    platform: samplePlatforms.Instagram,
   },
   {
     id: 'clip3',
@@ -25,7 +32,7 @@ const placeholderClips = [
     duration: '0:42',
     thumbnailUrl: '/placeholder-image.svg',
     views: '5.7K',
-    platform: 'TikTok',
+    platform: samplePlatforms.TikTok,
   },
   {
     id: 'clip4',
@@ -33,7 +40,7 @@ const placeholderClips = [
     duration: '1:22',
     thumbnailUrl: '/placeholder-image.svg',
     views: '2.1K',
-    platform: 'YouTube',
+    platform: samplePlatforms.YouTube,
   },
   // Add more clips if needed
 ];
@@ -55,8 +62,7 @@ export default function GeneratedClips() {
       {/* Added overflow-y-auto and flex-1 to make the list scrollable within the container */}
       <div className="space-y-3 overflow-y-auto flex-1 pr-1">
         {placeholderClips.map((clip, index) => (
-          // We need to cast the platform string to the Platform type here
-          <ClipCard key={index} clip={{...clip, platform: clip.platform as any}} />
+          <ClipCard key={index} clip={clip} />
         ))}
       </div>
     </div>

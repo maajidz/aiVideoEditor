@@ -3,9 +3,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Header from '@/components/Header';
 // Sidebar import should be removed
-import { ProgressTracker } from '@/components/upload/ProgressTracker';
-import { UploadArea } from '@/components/upload/UploadArea';
-import { UrlImport } from '@/components/upload/UrlImport';
+// Removed: import { ProgressTracker } from '@/components/upload/ProgressTracker';
+// Removed: import { UploadArea } from '@/components/upload/UploadArea';
+// Removed: import { UrlImport } from '@/components/upload/UrlImport';
 import { VideoDetailsSection } from '@/components/upload/VideoDetailsSection';
 import { PlatformSelection } from '@/components/upload/PlatformSelection';
 import { AIEnhancementSettings } from '@/components/upload/AIEnhancementSettings';
@@ -15,21 +15,21 @@ import { v4 as uuidv4 } from 'uuid'; // Import uuid for unique IDs
 import { VideoUploadCard } from '@/components/upload/VideoUploadCard';
 import { AddNextVideo } from '@/components/upload/AddNextVideo';
 import { useRouter } from 'next/navigation'; // Import useRouter
-import { RuxButton, RuxIcon, RuxProgress } from '@astrouxds/react';
+// Removed: import { RuxButton, RuxIcon, RuxProgress } from '@astrouxds/react';
 import Footer from '@/components/shared/Footer';
-import { UploadItem, Platform, BackgroundUploadItem, UploadStatus, VideoUrlFetchResult } from '@/types/types'; // Import Platform and BackgroundUploadItem
+import { UploadItem, BackgroundUploadItem, UploadStatus, VideoUrlFetchResult } from '@/types/types';
 
 export default function UploadPage() {
   const router = useRouter(); // Initialize useRouter
   const { startBackgroundProcessing } = useLayoutContext(); // Get context function
   const [uploadItems, setUploadItems] = useState<UploadItem[]>([]);
-  const [allDetailsFilled, setAllDetailsFilled] = useState<boolean>(false);
-  const [selectedPlatforms, setSelectedPlatforms] = useState<Platform[]>([]); // State for selected platforms
+  // Removed unused state: allDetailsFilled, setAllDetailsFilled
+  // Removed unused state: selectedPlatforms, setSelectedPlatforms
   
   // Use a ref to manage the interval timer
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   
-  const { isSidebarCollapsed } = useLayoutContext();
+  // Removed unused isSidebarCollapsed
   
   // --- Define stopSimulation FIRST --- 
   const stopSimulation = useCallback(() => {
@@ -59,7 +59,6 @@ export default function UploadPage() {
   });
 
   // Handler to add the first empty item if the list is empty
-  // (We'll trigger this on mount or when the first file is added)
   useEffect(() => {
     if (uploadItems.length === 0) {
       // Optionally start with one empty item
@@ -78,45 +77,7 @@ export default function UploadPage() {
     );
   };
 
-  // Helper to reset audio state for a specific item
-  const resetAudioStateForItem = (id: string) => {
-     updateUploadItem(id, {
-        audioFile: null,
-        audioUrl: null,
-        wantsSeparateAudio: false,
-        showAddAudioLink: true, 
-    });
-  };
-
-  // Helper to reset video state 
-  const resetVideoStateForItem = (id: string) => {
-      updateUploadItem(id, {
-          file: null,
-          videoUrl: null,
-          title: '',
-          thumbnailUrl: null,
-          duration: null, 
-          status: 'idle',
-          progress: 0,
-          errorMessage: null,
-          showAddAudioLink: false, 
-      });
-      resetAudioStateForItem(id);
-  };
-
-  const handleVideoSelect = (id: string, selectedFile: File | null) => {
-    resetAudioStateForItem(id); 
-    // TODO: Could try to get duration from file using <video> element if needed
-    updateUploadItem(id, {
-        file: selectedFile,
-        videoUrl: null,
-        title: '',
-        thumbnailUrl: selectedFile ? URL.createObjectURL(selectedFile) : null,
-        duration: null, // Clear duration for file uploads for now
-        showAddAudioLink: !!selectedFile, 
-    });
-    console.log(`Video file selected for item ${id}:`, selectedFile?.name);
-  };
+  // Removed unused function: resetAudioStateForItem
 
   const handleAudioSelect = (id: string, selectedAudioFile: File | null) => {
      if (selectedAudioFile) {
@@ -134,70 +95,8 @@ export default function UploadPage() {
      }
   };
   
-  // Modified fetch handler for existing items
-  const handleVideoUrlFetch = async (id: string, url: string): Promise<VideoUrlFetchResult> => {
-    resetAudioStateForItem(id);
-    console.log(`Calling backend for item ${id}, URL: ${url}`);
-    
-    updateUploadItem(id, { 
-        videoUrl: url,
-        title: 'Fetching metadata...', 
-        thumbnailUrl: null,
-        duration: null,
-        showAddAudioLink: false, 
-    });
-
-    try {
-        const response = await fetch(`/api/youtube-metadata?url=${encodeURIComponent(url)}`);
-        const data: VideoUrlFetchResult = await response.json();
-
-        if (!response.ok || !data.success) {
-            console.error("Backend fetch error:", data.error || response.statusText);
-            throw new Error(data.error || 'Failed to fetch metadata');
-        }
-
-        updateUploadItem(id, {
-            videoUrl: url,
-            file: null,
-            title: data.title || 'Title not found',
-            thumbnailUrl: data.thumbnailUrl, 
-            duration: data.duration ?? null, // Use nullish coalescing for undefined
-            showAddAudioLink: true, 
-        });
-        return { success: true, title: data.title, thumbnailUrl: data.thumbnailUrl, duration: data.duration };
-
-    } catch (error: any) {
-        console.error("Error calling backend metadata endpoint:", error);
-        // Update item with error state
-        updateUploadItem(id, { 
-            videoUrl: url, 
-            title: 'Fetch Failed',
-            thumbnailUrl: null,
-            duration: null,
-            showAddAudioLink: false,
-            status: 'error', // Also set status to error
-            errorMessage: error.message
-         }); 
-        return { success: false, error: error.message };
-    }
-  };
-
-  const handleAudioUrlFetch = async (id: string, url: string): Promise<boolean> => {
-    await new Promise(resolve => setTimeout(resolve, 800));
-    const success = Math.random() > 0.3;
-    if (success) {
-         // Update only the file/URL state. wantsSeparateAudio is already true.
-        updateUploadItem(id, {
-            audioUrl: url,
-            audioFile: null,
-        });
-    } else {
-       updateUploadItem(id, { audioUrl: null }); 
-       // OPTIONAL: Should we set wantsSeparateAudio back to false if fetch fails?
-       // updateUploadItem(id, { wantsSeparateAudio: false, showAddAudioLink: true }); 
-    }
-    return success;
-  };
+  // Removed unused function: handleVideoUrlFetch
+  // Removed unused function: handleAudioUrlFetch
 
   const handleAddAudioClick = (id: string) => {
     // Set wantsSeparateAudio to true immediately to render the audio section
@@ -244,7 +143,7 @@ export default function UploadPage() {
         newItem.showAddAudioLink = true;
     } else if (url) {
         newItem.videoUrl = url; 
-        newItem.title = metadata?.title || `Video from ${new URL(url).hostname}`;
+        newItem.title = metadata?.title || (url ? `Video from ${new URL(url).hostname}` : 'Untitled Video'); // Added null check for url
         newItem.thumbnailUrl = metadata?.thumbnailUrl || null;
         newItem.duration = metadata?.duration ?? null; // Use nullish coalescing
         newItem.showAddAudioLink = true;
@@ -272,10 +171,11 @@ export default function UploadPage() {
               duration: data.duration ?? null // Use nullish coalescing
             };
 
-      } catch (error: any) {
+      } catch (error: unknown) { // Changed error type to unknown
           console.error("Error calling backend metadata endpoint:", error);
+          const message = error instanceof Error ? error.message : 'An unknown error occurred';
           console.log("Initial URL fetch failed");
-          return { success: false, error: error.message };
+          return { success: false, error: message };
       }
   };
 
@@ -285,24 +185,24 @@ export default function UploadPage() {
       
       // Calculate the next state for all items first
       const nextStateItems = prevItems.map(item => {
-        let currentStatus = item.status;
-        let currentProgress = item.progress;
-        let nextStatus: UploadStatus = currentStatus;
-        let nextProgress: number = currentProgress;
+        const currentStatusConst = item.status; // Changed to const
+        const currentProgressConst = item.progress; // Changed to const
+        let nextStatus: UploadStatus = currentStatusConst;
+        let nextProgress: number = currentProgressConst;
 
         // Only update items that are in active processing states
-        if (['uploading', 'processing', 'enhancing'].includes(currentStatus)) {
-            nextProgress = currentProgress + Math.random() * 15;
+        if (['uploading', 'processing', 'enhancing'].includes(currentStatusConst)) {
+            nextProgress = currentProgressConst + Math.random() * 15;
 
             if (nextProgress >= 100) {
               nextProgress = 100;
-              if (currentStatus === 'uploading') {
+              if (currentStatusConst === 'uploading') {
                 nextStatus = 'processing';
                 nextProgress = 0;
-              } else if (currentStatus === 'processing') {
+              } else if (currentStatusConst === 'processing') {
                 nextStatus = 'enhancing';
                 nextProgress = 0;
-              } else if (currentStatus === 'enhancing') {
+              } else if (currentStatusConst === 'enhancing') {
                 // Use type assertion to assign 'complete'
                 nextStatus = 'complete' as UploadStatus;
                 nextProgress = 100;
@@ -428,9 +328,9 @@ export default function UploadPage() {
   // Check if *all* items are finished (completed, errored, or idle) and none are processing
   const allTasksFinished = uploadItems.length > 0 && !isProcessing && uploadItems.every(item => ['complete', 'error', 'idle'].includes(item.status));
 
-  const showInitialUpload = uploadItems.length === 0;
+  // Removed unused variable: showInitialUpload
 
-  const footerLeftOffset = isSidebarCollapsed ? 'left-20' : 'left-64';
+  // Removed unused variable: footerLeftOffset
   const isAnyVideoSelected = uploadItems.some(item => item.file || item.videoUrl);
 
   // --- Render Logic --- 
@@ -470,7 +370,7 @@ export default function UploadPage() {
 
          {!isProcessing && (
              <AddNextVideo
-                onVideoAdded={handleAddNewVideo as any}
+                onVideoAdded={handleAddNewVideo as (file?: File | null, url?: string | null, metadata?: { title?: string, thumbnailUrl?: string | null, duration?: number | null }) => void} // Cast to expected type
                 onVideoUrlFetch={handleInitialVideoUrlFetch}
                 isFirstItem={uploadItems.length === 0}
               />

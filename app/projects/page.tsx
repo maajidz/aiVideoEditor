@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import Header from '@/components/Header';
 // import Sidebar from '@/components/Sidebar'; // Removed redundant import
 import Link from 'next/link';
-import { useLayoutContext, BackgroundUploadItem } from '@/app/context/LayoutContext'; // Import context
+import Image from 'next/image'; // Added Image import
+import { useLayoutContext /* Removed BackgroundUploadItem as it's not directly used for annotation here */ } from '@/app/context/LayoutContext'; // Import context
 import ProjectCard from '@/components/ProjectCard'; // Import ProjectCard
 import { UploadStatus } from '@/types/types'; // Import UploadStatus for type consistency
 import { statusColors, statusDescriptions } from '@/components/ProjectCard'; // Assuming they can be exported
@@ -83,6 +84,20 @@ const formatDate = (dateString: string) => {
   }).format(date);
 };
 
+// Define an interface for items displayed in the list view
+interface DisplayListItem {
+  id: string;
+  title: string;
+  thumbnail: string;
+  uploadDate: string;
+  duration: string;
+  status: string | UploadStatus; // Can be from projectsData or backgroundItems
+  clipCount: number;
+  category?: string; // category might not exist on backgroundItems initially
+  _isProcessingItem?: boolean;
+  _progress?: number;
+}
+
 export default function ProjectsPage() {
   const [filter, setFilter] = useState('all'); // 'all', 'completed', 'processing'
   const [sortBy, setSortBy] = useState('newest'); // 'newest', 'oldest', 'a-z', 'z-a'
@@ -92,9 +107,9 @@ export default function ProjectsPage() {
   const { isProcessingInBackground, backgroundItems } = useLayoutContext(); // Get context state
 
   // Filter and sort projects
-  const projectsToDisplay = projectsData
+  const projectsToDisplay: DisplayListItem[] = projectsData
     .filter(project => {
-      // Exclude items that are currently being processed in the background for grid view, 
+      // Exclude items that are currently being processed in the background for grid view,
       // as they are shown in a separate section. For list view, they'll be merged.
       if (view === 'grid' && isProcessingInBackground && backgroundItems.some(bgItem => bgItem.id === project.id)) {
         return false;
@@ -121,10 +136,7 @@ export default function ProjectsPage() {
       }
     });
 
-  // If list view and processing, prepend background items to the display list
-  // We need to map BackgroundUploadItem to a structure that the table can render similarly to Project a Project
-  // For now, this mapping will be basic. ProjectCard handles detailed status/progress display.
-  const listDisplayItems = view === 'list' && isProcessingInBackground && backgroundItems.length > 0 
+  const listDisplayItems: DisplayListItem[] = view === 'list' && isProcessingInBackground && backgroundItems.length > 0 
     ? [
         ...backgroundItems.map(item => ({
           id: item.id,
@@ -132,13 +144,13 @@ export default function ProjectsPage() {
           thumbnail: projectsData.find(p=>p.id === item.id)?.thumbnail || 'https://readdy.ai/api/search-image?query=abstract%20tech%20background&width=160&height=90&seq=99&orientation=landscape',
           uploadDate: new Date().toISOString(), // Placeholder, as bgItem doesn't have this
           duration: projectsData.find(p=>p.id === item.id)?.duration || 'N/A',
-          status: item.status, // This is UploadStatus, ProjectCard can handle it
-          _isProcessingItem: true, // Flag to identify these items for special rendering in list
-          _progress: item.progress, // Store progress for list view
+          status: item.status as UploadStatus, // Cast to UploadStatus
+          _isProcessingItem: true, 
+          _progress: item.progress, 
           clipCount: projectsData.find(p=>p.id === item.id)?.clipCount || 0,
           category: projectsData.find(p=>p.id === item.id)?.category || 'N/A',
         })),
-        ...projectsToDisplay.filter(p => !backgroundItems.some(bg => bg.id === p.id)) // Avoid duplication if already filtered out
+        ...projectsToDisplay.filter(p => !backgroundItems.some(bg => bg.id === p.id))
       ]
     : projectsToDisplay;
 
@@ -263,7 +275,13 @@ export default function ProjectsPage() {
                 <div key={project.id} className="bg-slate-900 rounded-lg overflow-hidden hover:translate-y-[-2px] transition shadow-lg">
                   <Link href={`/review?projectId=${project.id}`} className="block">
                     <div className="relative aspect-video">
-                      <img src={project.thumbnail} alt={project.title} className="w-full h-full object-cover" />
+                      <Image 
+                        src={project.thumbnail} 
+                        alt={project.title} 
+                        width={360} // Example width
+                        height={202} // Example height (for 16:9)
+                        className="w-full h-full object-cover" 
+                      />
                       {/* Status Badge */}
                       <div className="absolute top-3 right-3">
                         <span className={`text-xs px-2 py-1 rounded-full ${
@@ -346,12 +364,18 @@ export default function ProjectsPage() {
                   <tbody className="bg-slate-900 divide-y divide-slate-800">
                     {/* Option: Prepend backgroundItems to filteredProjects for list view if not handled separately */}
                     {/* For now, backgroundItems are shown in their own grid above the main list/grid */}
-                    {listDisplayItems.map((project: any) => ( // Use listDisplayItems and type as any for now due to merged structure
+                    {listDisplayItems.map((project: DisplayListItem) => ( // Use DisplayListItem type
                       <tr key={project.id} className="hover:bg-slate-800">
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
-                            <div className="flex-shrink-0 h-10 w-16 rounded overflow-hidden">
-                              <img src={project.thumbnail} alt={project.title} className="h-10 w-16 object-cover" />
+                            <div className="flex-shrink-0 h-10 w-16 rounded overflow-hidden relative"> {/* Added relative for Image */}
+                              <Image 
+                                src={project.thumbnail} 
+                                alt={project.title} 
+                                width={64} // w-16
+                                height={36} // for aspect-video on h-10 approx.
+                                className="h-10 w-16 object-cover" 
+                              />
                             </div>
                             <div className="ml-3">
                               <div className="text-sm font-medium text-white">{project.title}</div>

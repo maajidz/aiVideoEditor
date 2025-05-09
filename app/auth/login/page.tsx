@@ -25,6 +25,7 @@ export default function LoginPage() {
       // For demo purposes, just redirect to dashboard
       router.push('/');
     } catch (err) {
+      console.error("Login failed:", err);
       setError('Invalid email or password');
     } finally {
       setIsLoading(false);

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function EmptyDashboard() {
   return (
@@ -7,7 +8,7 @@ export default function EmptyDashboard() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-xl font-semibold text-white">Welcome to Video Farming!</h2>
-          <p className="text-sm text-slate-400">Let's start creating and managing your video content.</p>
+          <p className="text-sm text-slate-400">Let&apos;s start creating and managing your video content.</p>
         </div>
         <div className="flex space-x-3">
           <button className="flex items-center px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-button whitespace-nowrap">
@@ -33,7 +34,7 @@ export default function EmptyDashboard() {
           <i className="ri-video-add-line text-6xl text-primary"></i>
         </div>
         <h2 className="text-2xl font-semibold text-white mb-3">Start Your Content Journey</h2>
-        <p className="text-slate-400 mb-8 max-w-lg">Upload your first video and let our AI help you transform it into engaging content for multiple platforms. We'll handle the editing while you focus on creating.</p>
+        <p className="text-slate-400 mb-8 max-w-lg">Upload your first video and let our AI help you transform it into engaging content for multiple platforms. We&apos;ll handle the editing while you focus on creating.</p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mb-12">
           <div className="bg-slate-800 rounded-lg p-6 text-center">
@@ -156,7 +157,13 @@ export default function EmptyDashboard() {
         {/* Project 1 */}
         <div className="bg-slate-800 rounded p-4">
           <div className="relative mb-3 rounded overflow-hidden aspect-video">
-            <img src="https://readdy.ai/api/search-image?query=professional%20camera%20setup%20for%20content%20creation%2C%20video%20equipment%2C%20high%20quality%20studio%20lighting%2C%20modern%20video%20production%20setup%2C%20detailed%20equipment&width=400&height=225&seq=456&orientation=landscape" alt="Project Thumbnail" className="w-full h-full object-cover" />
+            <Image 
+              src="https://readdy.ai/api/search-image?query=professional%20camera%20setup%20for%20content%20creation%2C%20video%20equipment%2C%20high%20quality%20studio%20lighting%2C%20modern%20video%20production%20setup%2C%20detailed%20equipment&width=400&height=225&seq=456&orientation=landscape" 
+              alt="Project Thumbnail 1" 
+              width={400} 
+              height={225} 
+              className="w-full h-full object-cover" 
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-3">
               <span className="text-xs font-medium px-2 py-1 bg-primary/90 rounded-full">In Progress</span>
             </div>
@@ -195,7 +202,13 @@ export default function EmptyDashboard() {
         {/* Project 2 */}
         <div className="bg-slate-800 rounded p-4">
           <div className="relative mb-3 rounded overflow-hidden aspect-video">
-            <img src="https://readdy.ai/api/search-image?query=travel%20vlog%20setup%2C%20scenic%20mountain%20landscape%2C%20travel%20content%20creation%2C%20backpack%20and%20camera%20gear%2C%20adventure%20filmmaking&width=400&height=225&seq=789&orientation=landscape" alt="Project Thumbnail" className="w-full h-full object-cover" />
+            <Image 
+              src="https://readdy.ai/api/search-image?query=travel%20vlog%20setup%2C%20scenic%20mountain%20landscape%2C%20travel%20content%20creation%2C%20backpack%20and%20camera%20gear%2C%20adventure%20filmmaking&width=400&height=225&seq=789&orientation=landscape" 
+              alt="Project Thumbnail 2" 
+              width={400} 
+              height={225} 
+              className="w-full h-full object-cover" 
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-3">
               <span className="text-xs font-medium px-2 py-1 bg-green-500/90 rounded-full">Completed</span>
             </div>

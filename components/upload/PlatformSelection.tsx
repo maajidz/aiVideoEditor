@@ -115,9 +115,7 @@ const renderAspectRatioSettings = (
 };
 
 export const PlatformSelection = () => {
-  const [selectedLongForm, setSelectedLongForm] = useState<string[]>(['youtube']); // Default YouTube
   const [selectedShortForm, setSelectedShortForm] = useState<string[]>([]);
-  // Aspect ratio state might need adjustment if different ratios are needed per type
   const [selectedAspectRatios, setSelectedAspectRatios] = useState<Record<string, string>>({
     youtube: '16:9' // Default aspect ratio for YouTube long form
   });
@@ -126,17 +124,18 @@ export const PlatformSelection = () => {
   // Effect to sync individual short selections with the master checkbox
   useEffect(() => {
     const allShortIds = shortFormOptions.map(p => p.id);
-    const allSelected = allShortIds.length > 0 && allShortIds.every(id => selectedShortForm.includes(id)); // Check length > 0
+    const allSelected = allShortIds.length > 0 && allShortIds.every(id => selectedShortForm.includes(id));
     setIsAllShortsSelected(allSelected);
   }, [selectedShortForm]);
 
   // Effect to set default aspect ratios when platforms are selected
   useEffect(() => {
     const newAspectRatios = { ...selectedAspectRatios };
-    const allSelected = [...selectedLongForm, ...selectedShortForm];
+    // YouTube is always considered selected for long form
+    const allSelectedIds = ['youtube', ...selectedShortForm];
     let changed = false;
 
-    allSelected.forEach(platformId => {
+    allSelectedIds.forEach(platformId => {
       if (!newAspectRatios[platformId]) {
         const platform = allPlatformOptions.find(p => p.id === platformId);
         if (platform && platform.aspectRatios.length > 0) {
@@ -146,9 +145,8 @@ export const PlatformSelection = () => {
       }
     });
 
-    // Clean up aspect ratios for deselected platforms
     Object.keys(newAspectRatios).forEach(platformId => {
-        if (!allSelected.includes(platformId)) {
+        if (!allSelectedIds.includes(platformId)) {
             delete newAspectRatios[platformId];
             changed = true;
         }
@@ -158,7 +156,7 @@ export const PlatformSelection = () => {
         setSelectedAspectRatios(newAspectRatios);
     }
 
-  }, [selectedLongForm, selectedShortForm]); // Dependency updated
+  }, [selectedShortForm, selectedAspectRatios]); // Added selectedAspectRatios
 
   const toggleShortPlatform = (platformId: string) => {
     setSelectedShortForm(prev =>
@@ -178,9 +176,6 @@ export const PlatformSelection = () => {
     }
   };
 
-  // Combine selected platforms for aspect ratio section
-  const allSelectedPlatforms = [...selectedLongForm, ...selectedShortForm];
-
   const handleAspectRatioChange = (platformId: string, aspectRatio: string) => {
     setSelectedAspectRatios({
       ...selectedAspectRatios,
@@ -195,7 +190,7 @@ export const PlatformSelection = () => {
           <i className="ri-information-line"></i>
         </div>
         <p className="text-sm text-slate-400">
-          Select where to publish. Long form defaults to YouTube. Check "Short Form" to select all short video platforms.
+          Select where to publish. Long form defaults to YouTube. Check &quot;Short Form&quot; to select all short video platforms.
         </p>
       </div>
 

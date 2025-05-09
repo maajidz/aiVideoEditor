@@ -1,14 +1,15 @@
 import Image from 'next/image';
+import { Platform } from '@/types/types'; // Import the Platform interface
 
 // Define platform types (extend as needed)
-type Platform = 'YouTube' | 'Instagram' | 'TikTok' | 'Facebook' | 'Twitter';
+// REMOVE_LINE type Platform = 'YouTube' | 'Instagram' | 'TikTok' | 'Facebook' | 'Twitter';
 
 interface ClipCardProps {
   title: string;
   thumbnailUrl: string;
   duration: string;
   views: string; // Or number, formatting handled in component
-  platform: Platform;
+  platform: Platform; // Use the imported Platform interface
 }
 
 // Example placeholder data
@@ -17,14 +18,20 @@ const defaultClip: ClipCardProps = {
   thumbnailUrl: "/placeholder-clip-1.jpg", // Use placeholder image
   duration: "1:45",
   views: "1.2K",
-  platform: "YouTube",
+  platform: { // Update to use Platform object
+    id: 'youtube',
+    name: 'YouTube',
+    icon: 'ri-youtube-fill',
+    aspectRatio: '16:9',
+    type: 'long',
+  },
 };
 
 export default function ClipCard({ clip = defaultClip }: { clip?: ClipCardProps }) {
   const { title, thumbnailUrl, duration, views, platform } = clip;
 
   const getPlatformStyle = () => {
-    switch (platform) {
+    switch (platform.name) { // Use platform.name
       case 'Instagram': return "bg-pink-500/20 text-pink-400";
       case 'TikTok': return "bg-slate-600/80 text-slate-300";
       case 'Facebook': return "bg-blue-500/20 text-blue-400";
@@ -72,7 +79,7 @@ export default function ClipCard({ clip = defaultClip }: { clip?: ClipCardProps 
           </button>
         </div>
         <div className="flex items-center">
-          <span className={`text-xs font-medium px-2 py-0.5 ${getPlatformStyle()} rounded-full`}>{platform}</span>
+          <span className={`text-xs font-medium px-2 py-0.5 ${getPlatformStyle()} rounded-full`}>{platform.name}</span>
         </div>
       </div>
     </div>

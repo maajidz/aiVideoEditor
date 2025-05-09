@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useLayoutContext } from '@/app/context/LayoutContext';
-import { useRouter } from 'next/navigation';
 import { UploadStatus } from '@/types/types';
 
 // Advanced status descriptions for AI video processing
@@ -57,7 +56,6 @@ const BackgroundProcessingToast: React.FC = () => {
     aggregateBackgroundProgress,
     clearBackgroundProcessing,
   } = useLayoutContext();
-  const router = useRouter();
 
   // State to toggle between expanded and minimal view
   const [isExpanded, setIsExpanded] = useState(true);

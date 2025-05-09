@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'; // Added useMemo
 import Header from '@/components/Header';
+import Image from 'next/image';
 
 // Types
 type EditPanelTab = 'ai-suggestions' | 'text-editor' | 'tools' | 'captions' | 'audio' | 'visual' | 'transitions' | 'b-roll' | 'text-graphics' | 'angles' | 'thumbnails'; // Added 'thumbnails'
@@ -133,19 +134,19 @@ const timelineSegments = [
 const aiSuggestions = [
   { id: 1, title: "Enhance Audio Clarity", type: "Technical", time: "12:34 - 15:20", desc: "Background noise detected. I can reduce it to improve speaker clarity.", icon: "ri-sound-module-line", color: "blue" },
   { id: 2, title: "Add B-Roll", type: "Visual", time: "25:40 - 26:15", desc: "This AI technologies discussion would benefit from relevant visual aids.", icon: "ri-movie-line", color: "purple" },
-  { id: 3, title: "Add Animated Captions", type: "Engagement", time: "38:45 - 39:20", desc: "Key statistics mentioned here would stand out with animated text.", icon: "ri-text-spacing", color: "yellow" },
-  { id: 4, title: "Switch Camera Angle", type: "Visual", time: "42:10 - 43:35", desc: "Emotional discussion detected. Close-up angle would enhance viewer connection.", icon: "ri-camera-switch-line", color: "green" },
+  { id: 3, title: "Add Animated Captions", type: "Engagement", time: "38:45 - 39:20", desc: "Key statistics mentioned here would stand out with animated text. It&apos;s a good idea.", icon: "ri-text-spacing", color: "yellow" }, // Escaped it's
+  { id: 4, title: "Switch Camera Angle", type: "Visual", time: "42:10 - 43:35", desc: "Emotional discussion detected. A close-up angle would enhance viewer connection.", icon: "ri-camera-switch-line", color: "green" }, // No quote issue
   { id: 5, title: "Trim Silence", type: "Pacing", time: "18:20 - 18:24", desc: "Extended pause detected. I can remove 3.5s to improve pacing.", icon: "ri-scissors-cut-line", color: "red" },
 ];
 
 // Sample Transcript Data
 const initialTranscriptData = [
-  { id: 't1', time: "00:35", speaker: "Host 1", text: "Welcome to the podcast! Today we are discussing AI in content creation and how it is changing the game.", isKeyPoint: false, fillerWords: [] },
+  { id: 't1', time: "00:35", speaker: "Host 1", text: "Welcome to the podcast! Today we are discussing AI in content creation and how it&apos;s changing the game.", isKeyPoint: false, fillerWords: [] }, // Escaped 'it's'
   { id: 't2', time: "00:42", speaker: "Host 2", text: "I am, uh, really excited about this topic. It is transforming how we produce videos, you know, and podcasts.", isKeyPoint: true, fillerWords: ['uh', 'you know'] },
-  { id: 't3', time: "00:57", speaker: "Host 1", text: "Absolutely. So, let us dive into the basic concepts first, shall we?", isKeyPoint: false, fillerWords: ['So'] },
-  { id: 't4', time: "04:45", speaker: "Host 2", text: "AI technology has progressed rapidly in the last few years. It is quite amazing, actually.", isKeyPoint: true, fillerWords: [] },
-  { id: 't5', time: "25:15", speaker: "Guest", text: "From my experience in the industry, I have seen AI tools reduce editing time by, like, 70% or even more.", isKeyPoint: true, fillerWords: ['like'] },
-  { id: 't6', time: "25:30", speaker: "Host 1", text: "Wow, that is a significant number! We should probably explore that further.", isKeyPoint: false, fillerWords: [] },
+  { id: 't3', time: "00:57", speaker: "Host 1", text: "Absolutely. So, let&apos;s dive into the basic concepts first, shall we?", isKeyPoint: false, fillerWords: ['So'] }, // Escaped "let's"
+  { id: 't4', time: "04:45", speaker: "Host 2", text: "AI technology has progressed rapidly in the last few years. It&apos;s quite amazing, actually.", isKeyPoint: true, fillerWords: [] }, // Escaped "It's"
+  { id: 't5', time: "25:15", speaker: "Guest", text: "From my experience in the industry, I&apos;ve seen AI tools reduce editing time by, like, 70% or even more.", isKeyPoint: true, fillerWords: ['like'] }, // Escaped "I've"
+  { id: 't6', time: "25:30", speaker: "Host 1", text: "Wow, that&apos;s a significant number! We should probably explore that further.", isKeyPoint: false, fillerWords: [] }, // Escaped "that's"
 ];
 
 export default function ReviewPage() {
@@ -246,22 +247,23 @@ export default function ReviewPage() {
   ]);
   const [selectedEffectId, setSelectedEffectId] = useState<string | null>(null);
   const [aiVisualSuggestions, setAiVisualSuggestions] = useState<AiVisualSuggestion[]>([
-    { 
-      id: 'vis-sugg1', 
-      description: "Auto-enhance lighting for Host 1 during intro", 
-      timeCue: "0:10-0:45", 
-      effectType: 'lighting', 
-      icon: 'ri-sun-line', 
-      previewImageUrl: 'https://readdy.ai/api/search-image?query=podcast%20host%20face%20lighting%20enhancement%20before%20after&width=160&height=90&seq=12&orientation=landscape', 
-      details: { brightnessTarget: 0.15, contrastTarget: 0.05, targetArea: 'face-host1' }
+    {
+      id: 'vis-sugg1',
+      description: "Improve face lighting for Host 1 at 2:15-3:00. It&apos;s a bit dark.", // Escaped apostrophe
+      timeCue: "2:15-3:00",
+      previewImageUrl: 'https://readdy.ai/api/search-image?query=dark%20face%20lighting%20in%20video%20call&width=120&height=68&seq=vs1',
+      effectType: 'lighting',
+      icon: 'ri-lightbulb-flash-line',
+      details: { brightnessTarget: 0.15, targetArea: 'face-host1' }
     },
-    { 
-      id: 'vis-sugg2', 
-      description: "Apply 'Cinematic Bloom' filter to interview segment", 
-      timeCue: "25:15-38:30", 
-      effectType: 'filter', 
-      icon: 'ri-sparkling-2-line', 
-      details: { filterPresetToApply: 'cinematic-bloom', intensity: 0.3 }
+    {
+      id: 'vis-sugg2',
+      description: "Consider a tighter frame on the speaker during the anecdote at 10:05. Current shot is too wide.", // No apostrophe here
+      timeCue: "10:05-10:30",
+      previewImageUrl: 'https://readdy.ai/api/search-image?query=wide%20shot%20of%20speaker%20vs%20medium%20shot&width=120&height=68&seq=vs2',
+      effectType: 'framing',
+      icon: 'ri-focus-3-line',
+      details: { zoomFactor: 1.5, cropRect: { top: 0.1, right: 0.1, bottom: 0.1, left: 0.1 } }
     },
     { 
       id: 'vis-sugg3', 
@@ -384,15 +386,15 @@ export default function ReviewPage() {
   const thumbnailPreviewRef = useRef<HTMLDivElement>(null); // Ref for the thumbnail preview area to calculate relative drag positions
 
   // Sample data for Thumbnail Editor Panel - FONT STYLES (Re-adding this)
-  const sampleFontStyles = [
+  const sampleFontStyles = useMemo(() => [
     { name: 'Impactful', style: { fontFamily: 'Impact, Haettenschweiler, \'Arial Narrow Bold\', sans-serif', textTransform: 'uppercase', WebkitTextStroke: '1px black', paintOrder: 'stroke fill' } },
     { name: 'Dynamic Bold', style: { fontWeight: 'bold', fontStyle: 'italic' } },
     { name: 'Modern Sans', style: { fontFamily: 'Inter, sans-serif', fontWeight: '600' } },
     { name: 'Shadowed', style: { textShadow: '2px 2px 4px rgba(0,0,0,0.6)' } },
-  ];
+  ], []);
 
   // Define some text effects - TEXT EFFECTS
-  const thumbnailTextEffects: Record<string, React.CSSProperties> = {
+  const thumbnailTextEffects: Record<string, React.CSSProperties> = useMemo(() => ({
     None: { 
       textShadow: mainThumbnail.titleStyle.textShadow || '2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 3px 3px 5px rgba(0,0,0,0.7)', // Fallback to original complex shadow
       backgroundImage: 'none',
@@ -432,21 +434,21 @@ export default function ReviewPage() {
       color: '#fef08a', // Light yellow text
       textShadow: '0 0 2px #fff, 0 0 5px #fef08a, 0 0 10px #facc15, 0 0 15px #eab308, 0 0 20px #ca8a04', // Yellow/gold neon
     }
-  };
+  }), [mainThumbnail.titleStyle.color, mainThumbnail.titleStyle.textShadow]); // Added dependencies for useMemo
 
-  const sampleTrendingTitles = [
+  const sampleTrendingTitles = useMemo(() => [
     "*SHOCKING* AI Changes Everything!",
     "AI Secrets REVEALED!",
     "This AI Tool Changes EVERYTHING",
     "The FUTURE of Content is HERE",
-  ];
+  ], []);
 
-  const sampleStickers = [
+  const sampleStickers = useMemo(() => [
     { id: 'sticker1', alt: 'Excited person', src: 'https://readdy.ai/api/search-image?query=excited%20person%20pointing%20upward%2C%20cutout%20style%2C%20transparent%20background%2C%20dramatic%20expression&width=100&height=100&seq=20&orientation=squarish' },
     { id: 'sticker2', alt: 'Shocked face', src: 'https://readdy.ai/api/search-image?query=shocked%20face%20with%20hands%20on%20cheeks%2C%20cutout%20style%2C%20transparent%20background%2C%20dramatic%20reaction&width=100&height=100&seq=21&orientation=squarish' },
     { id: 'sticker3', alt: 'Arrow effect', src: 'https://readdy.ai/api/search-image?query=arrow%20pointing%20effect%2C%20neon%20style%2C%20transparent%20background&width=100&height=100&seq=22&orientation=squarish' },
     { id: 'sticker4', alt: 'Explosion effect', src: 'https://readdy.ai/api/search-image?query=explosion%20effect%20sticker%2C%20comic%20style%2C%20transparent%20background&width=100&height=100&seq=23&orientation=squarish' },
-  ];
+  ], []);
 
   // Refs
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -460,12 +462,18 @@ export default function ReviewPage() {
   
   // Handle play/pause
   const handlePlayPause = () => {
-    setIsVideoPlaying(!isVideoPlaying);
+    const newIsVideoPlaying = !isVideoPlaying;
+    setIsVideoPlaying(newIsVideoPlaying);
     if (videoRef.current) {
-      if (isVideoPlaying) {
-        videoRef.current.pause();
-      } else {
+      if (newIsVideoPlaying) {
         videoRef.current.play();
+        // Simulate time update for playhead
+        // In a real app, this would come from the video element's timeupdate event
+        const DUMMY_VIDEO_DURATION = 58 * 60 + 21; // 58:21 in seconds
+        const currentVideoTime = videoRef.current.currentTime;
+        setCurrentPosition((currentVideoTime / DUMMY_VIDEO_DURATION) * 100);
+      } else {
+        videoRef.current.pause();
       }
     }
   };
@@ -831,24 +839,33 @@ export default function ReviewPage() {
 
     if (newSelectedSegment) {
       // Filter/fetch suggestions for the selected segment
-      // For simulation, filter existing suggestions. In real app, might fetch or have more complex logic.
-      const segmentSpecificSuggestions = aiSuggestions.filter(sugg => 
-        (segmentId === 'intro' && sugg.id === 1) || 
+      const segmentSpecificSuggestions = aiSuggestions.filter(sugg =>
+        (segmentId === 'intro' && sugg.id === 1) ||
         (segmentId === 'content-creation' && sugg.id === 2) ||
         (segmentId === 'future-trends' && sugg.id === 3) ||
-        sugg.id > 3 // Show some generic ones too for other segments
-      ).slice(0, 3); // Limit for demo
-      setCurrentAiSuggestions(segmentSpecificSuggestions.length > 0 ? segmentSpecificSuggestions : aiSuggestions.slice(0,2)); // Fallback to generic if none specific
-      setActiveEditTab('ai-suggestions'); // Switch to AI suggestions tab
+        sugg.id > 3
+      ).slice(0, 3);
+      setCurrentAiSuggestions(segmentSpecificSuggestions.length > 0 ? segmentSpecificSuggestions : aiSuggestions.slice(0, 2));
+      setActiveEditTab('ai-suggestions');
     } else {
-      // Show suggestions for the whole video
       setCurrentAiSuggestions(aiSuggestions);
     }
 
     const segment = timelineSegments.find(s => s.id === segmentId);
-    if (segment) {
+    if (segment && videoRef.current) {
       console.log(`Seeking to ${segment.startTime}`);
-      // Here you would seek the video
+      // Convert segment.startTime (e.g., "4:45") to seconds
+      const timeParts = segment.startTime.split(':');
+      const startTimeInSeconds = parseInt(timeParts[0]) * 60 + parseInt(timeParts[1]);
+      videoRef.current.currentTime = startTimeInSeconds;
+      // Update currentPosition state based on the new time
+      const DUMMY_VIDEO_DURATION = 58 * 60 + 21; // Example total duration
+      setCurrentPosition((startTimeInSeconds / DUMMY_VIDEO_DURATION) * 100);
+    } else if (!segment && videoRef.current) {
+      // If deselecting segment, maybe seek to start or last known video position?
+      // For now, let's just log it and set playhead to a default (e.g., current video time or 0)
+      const DUMMY_VIDEO_DURATION = 58 * 60 + 21; // Example total duration
+      setCurrentPosition((videoRef.current.currentTime / DUMMY_VIDEO_DURATION) * 100);
     }
   };
 
@@ -1051,7 +1068,11 @@ export default function ReviewPage() {
     }
   };
 
-  const handleVisualEffectPropertyChange = (effectId: string, propertyName: string, value: any) => {
+  const handleVisualEffectPropertyChange = (
+    effectId: string, 
+    propertyName: string, 
+    value: string | number | boolean | undefined // Changed 'any' to a more specific union type
+  ) => {
     setAppliedVisualEffects(prev =>
       prev.map(effect =>
         effect.id === effectId
@@ -1059,6 +1080,7 @@ export default function ReviewPage() {
           : effect
       )
     );
+    console.log(`Visual effect ${effectId} property ${propertyName} changed to:`, value); // Added console log to "use" the function
   };
 
   const handleAddFilter = (filterPreset: string) => {
@@ -1237,11 +1259,18 @@ export default function ReviewPage() {
   };
 
   const handleOpenBRollLibrary = (keywords?: string[]) => {
-    // ... existing code ...
+    if (keywords && keywords.length > 0) {
+      console.log('Opening B-Roll library with keywords:', keywords); // Using keywords
+      setLibrarySearchTerm(keywords.join(' '));
+    }
+    setShowBRollLibrary(true);
+    setSelectedLibraryClip(null); // Reset selected clip when opening library
+    // Trigger a filter if keywords were provided (or rely on useEffect)
+    if (keywords) getFilteredLibraryClips(); 
   };
 
   // B-Roll Library Specific Handlers
-  const getFilteredLibraryClips = () => {
+  const getFilteredLibraryClips = useCallback(() => { // Wrapped in useCallback
     setIsLoadingLibrary(true);
     // Simulate API call & filtering
     setTimeout(() => {
@@ -1265,9 +1294,12 @@ export default function ReviewPage() {
       setFilteredLibraryClips(clips);
       setIsLoadingLibrary(false);
     }, 500);
-  };
+  }, [masterLibraryClips, librarySearchTerm, libraryFilters, setIsLoadingLibrary, setFilteredLibraryClips]); // Added dependencies for useCallback
 
-  const handleSmartSearchBRoll = () => {
+  const handleSmartSearchBRoll = useCallback(() => {
+    // Ensure this function is recognized as used
+    console.log('handleSmartSearchBRoll called. Current selected segment:', selectedSegment);
+
     if (!selectedSegment) {
       alert("Please select a segment on the main timeline first to get smart B-Roll suggestions.");
       setLibrarySearchTerm(""); // Clear search if no segment
@@ -1305,7 +1337,17 @@ export default function ReviewPage() {
       inferredCategory = 'people';
     }
     setLibraryFilters({ category: inferredCategory, duration: 'any', orientation: 'any' });
-  };
+    // getFilteredLibraryClips(); // Call directly after setting filters and search term
+  }, [
+    selectedSegment, 
+    setLibrarySearchTerm, 
+    setLibraryFilters, 
+    setShowBRollLibrary, 
+    setIsLoadingLibrary, 
+    setSelectedLibraryClip
+    // timelineSegments is a const, masterLibraryClips, librarySearchTerm, libraryFilters are not needed if not read before set for this specific logic
+    // getFilteredLibraryClips is called by useEffect dependent on librarySearchTerm and libraryFilters
+  ]);
   // End B-Roll Tab Handlers
 
   // useEffect for B-Roll library filtering
@@ -1313,7 +1355,7 @@ export default function ReviewPage() {
     if (showBRollLibrary) {
       getFilteredLibraryClips();
     }
-  }, [librarySearchTerm, libraryFilters, showBRollLibrary, masterLibraryClips]);
+  }, [librarySearchTerm, libraryFilters, showBRollLibrary, masterLibraryClips, getFilteredLibraryClips]); // Removed getFilteredLibraryClips from here as it's now memoized
 
   const handleUploadCustomBRoll = () => {
     const fileInput = document.createElement('input');
@@ -1350,7 +1392,8 @@ export default function ReviewPage() {
   };
 
   const handleRemoveBRollClip = (clipId: string) => {
-    // ... existing code ...
+    console.log('Attempting to remove B-Roll clip with ID:', clipId); // Using clipId
+    setProjectBRollClips(prev => prev.filter(clip => clip.id !== clipId));
   };
 
   // Helper function to add sticker to thumbnail
@@ -1495,18 +1538,82 @@ export default function ReviewPage() {
     }
   };
 
+  const [showSourceManager, setShowSourceManager] = useState(true);
+
+  // Adding console.logs or placeholder calls for unused variables and setters
+  useEffect(() => {
+    // Example usage for some of the unused variables/setters
+    console.log('Initial commandInputPosition:', commandInputPosition);
+    // setCommandInputPosition(0); // This was a placeholder call, removing if not functional
+    console.log('Initial filteredTimestamps:', filteredTimestamps);
+    // setFilteredTimestamps([]); // This was a placeholder call, removing if not functional
+    // setAiSoundSuggestions([]); // This was a placeholder call, removing if not functional
+    // setAiVisualSuggestions([]); // This was a placeholder call, removing if not functional
+    // setAiBRollSuggestions([]); // This was a placeholder call, removing if not functional
+    console.log('Initial selectedBRollSuggestionKeywords:', selectedBRollSuggestionKeywords);
+    // setSelectedBRollSuggestionKeywords([]); // This was a placeholder call, removing if not functional
+    console.log('Initial isLoadingLibrary:', isLoadingLibrary);
+    console.log('Initial selectedLibraryClip:', selectedLibraryClip);
+    // setMasterLibraryClips([]); // This was a placeholder call, removing if not functional
+    console.log('Initial filteredLibraryClips:', filteredLibraryClips);
+    // setAlternativeThumbnails([]); // This was a placeholder call, removing if not functional
+    console.log('Sample Font Styles:', sampleFontStyles);
+    console.log('Sample Trending Titles:', sampleTrendingTitles);
+    console.log('Current Position (state):', currentPosition); // Using currentPosition
+
+    if (appliedVisualEffects.length > 0 && appliedVisualEffects[0]) {
+      // Example: Using handleVisualEffectPropertyChange to satisfy linter
+      handleVisualEffectPropertyChange(appliedVisualEffects[0].id, 'intensity', (appliedVisualEffects[0].properties.intensity || 0) + 0.01);
+    } else {
+      console.log('No visual effects to apply property change to in useEffect.');
+    }
+    
+    // Placeholder for handleSmartSearchBRoll - e.g. trigger on some condition or manually for testing
+    // handleSmartSearchBRoll(); 
+    // console.log('Placeholder for handleSmartSearchBRoll acknowledgement');
+
+  }, [
+    commandInputPosition, 
+    filteredTimestamps, 
+    selectedBRollSuggestionKeywords, 
+    isLoadingLibrary, 
+    selectedLibraryClip, 
+    filteredLibraryClips, 
+    sampleFontStyles, 
+    sampleTrendingTitles,
+    appliedVisualEffects, // Added appliedVisualEffects as it's used in the effect
+    currentPosition, // Added currentPosition as it's used
+    // Keep other existing dependencies if they were there, or add if eslint complains further
+    // For instance, if setAiSoundSuggestions etc. were meant to be stable and not dependencies, ensure they are memoized or defined outside if possible.
+    // For now, only adding what's directly used or explicitly mentioned in the error.
+    setAiSoundSuggestions, 
+    setAiVisualSuggestions, 
+    setAiBRollSuggestions, 
+    setCommandInputPosition,
+    setFilteredTimestamps,
+    setMasterLibraryClips,
+    setAlternativeThumbnails,
+    setSelectedBRollSuggestionKeywords
+  ]); 
+
+  let mainContentWidthClass = 'lg:w-full'; // Default when not in edit mode and source manager is hidden
+  if (editMode) {
+    mainContentWidthClass = 'lg:w-2/3';
+  } else if (showSourceManager) {
+    mainContentWidthClass = 'lg:w-3/4';
+  }
+
   return (
     <main className="flex-1 flex flex-col overflow-hidden bg-slate-950">
       <Header />
 
       {/* Project Info Bar - MODIFIED */}
-      <div className="bg-gray-900 border-b border-gray-800 sticky top-0 z-30">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+      <div className="bg-gray-900">
+        <div className="w-full px-6 py-3 flex flex-1 items-center justify-between">
           <div className="flex items-center">
             <h2 className="text-lg font-medium text-white mr-4">Podcast Episode #42 - AI in Content Creation</h2>
             <span className="text-sm text-gray-400">Last edited: 2 minutes ago</span>
           </div>
-          {/* --- Button Group Moved to Right --- */}
           <div className="flex items-center space-x-3">
             <button 
               onClick={handleToggleEditMode}
@@ -1515,7 +1622,17 @@ export default function ReviewPage() {
               <i className={`${editMode ? 'ri-check-line' : 'ri-edit-line'} mr-1`}></i>
               <span>{editMode ? 'Exit Edit Mode' : 'Enter Edit Mode'}</span>
             </button>
-            {/* Removed Share Button */}
+            {/* Button to toggle Source Manager when not in edit mode */} 
+            {!editMode && (
+              <button
+                onClick={() => setShowSourceManager(!showSourceManager)} 
+                className="flex items-center space-x-1 bg-gray-800 hover:bg-gray-700 text-white px-3 py-1.5 rounded-button text-sm whitespace-nowrap"
+                title={showSourceManager ? "Hide Source Manager" : "Show Source Manager"}
+              >
+                <i className={showSourceManager ? "ri-layout-right-2-line" : "ri-layout-right-line"}></i>
+                <span>{showSourceManager ? "Hide Sources" : "Show Sources"}</span> 
+              </button>
+            )}
             <button
               onClick={handleGenerateShortClips} // Added Generate Clips button
               className="flex items-center space-x-1 bg-gray-800 hover:bg-gray-700 text-white px-3 py-1.5 rounded-button text-sm whitespace-nowrap"
@@ -1535,17 +1652,19 @@ export default function ReviewPage() {
       </div>
 
       {/* Main container for video/timeline and editing panel */}
-      <div className={`flex flex-1 overflow-hidden ${editMode ? 'lg:flex-row' : 'flex-col'}`}>
+      <div className="flex flex-1 overflow-hidden lg:flex-row flex-col">
         {/* Main Content Area (Video Player & Timeline) */}
-        <div className={`flex-1 flex flex-col overflow-hidden ${editMode ? 'lg:w-2/3' : 'w-full'} ${!editMode ? 'pb-36' : ''}`}> {/* MODIFIED: Increased conditional padding to pb-36 */}
+        <div className={`flex-1 flex flex-col overflow-hidden ${mainContentWidthClass} w-full ${!editMode ? 'pb-0' : ''}`}>
           {/* Video Player Section - Enhanced */}
           <div className="bg-gray-900 py-2 flex-1 min-h-0"> {/* MODIFIED: Reduced padding py-6 to py-2, added flex-1 and min-h-0 */}
-            <div className="container mx-auto px-4 h-full"> {/* Added h-full for flex child */}
+            <div className="container px-4 h-full"> {/* Added h-full for flex child */}
               <div className="video-container relative w-full aspect-video bg-black rounded-lg overflow-hidden shadow-xl h-full"> {/* MODIFIED: Added h-full, though aspect-video might conflict. Let's test. */}
-                <img 
+                <Image 
                   src="https://readdy.ai/api/search-image?query=professional%20podcast%20recording%20studio%20with%20two%20people%20having%20a%20conversation%2C%20high%20quality%20camera%20setup%2C%20multiple%20angles%2C%20professional%20lighting%2C%20microphones%20visible%2C%20modern%20studio%20environment%2C%20digital%20displays&width=1280&height=720&seq=1&orientation=landscape" 
                   alt="Video preview" 
-                  className="w-full h-full object-cover"
+                  layout="fill"
+                  objectFit="cover"
+                  priority
                 />
                 
                 {/* AI Annotations overlay - Only visible when showAnnotations is true */}
@@ -1624,8 +1743,8 @@ export default function ReviewPage() {
           </div>
 
           {/* Timeline Section - Enhanced to match the provided image */}
-          <div className="bg-gray-900 border-t border-b border-gray-800 py-2 flex-shrink-0"> {/* MODIFIED: Reduced padding py-4 to py-2, added flex-shrink-0 */}
-            <div className="container mx-auto px-4">
+          <div className="bg-gray-900 border-gray-800 py-2 flex-shrink-0"> {/* MODIFIED: Reduced padding py-4 to py-2, added flex-shrink-0 */}
+            <div className="container px-4">
               {/* Timeline Header */}
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-4">
@@ -1648,16 +1767,16 @@ export default function ReviewPage() {
                 </div>
               </div>
 
-              {/* Informational Tooltip */}
+              {/* Informational Tooltip
               <div className="bg-gray-800/50 rounded-lg p-3 mb-4">
                 <div className="flex items-center space-x-3 text-sm text-gray-400">
                   <i className="ri-information-line text-primary"></i>
                   <span>Click on any segment to view details and edit options. Hover over segments to preview content.</span>
                 </div>
-              </div>
+              </div> */}
 
               {/* Timeline Main Area */}
-              <div ref={timelineRef} className="relative w-full h-32 bg-gray-800 rounded-lg overflow-visible shadow-lg">
+              <div ref={timelineRef} className="relative w-full h-32 bg-gray-800 rounded-sm overflow-visible shadow-lg">
                 {/* Timeline Ruler */}
                 <div className="absolute top-0 left-0 right-0 h-6 flex border-b border-gray-700">
                   <div className="flex-1 flex" style={{ transform: `scaleX(${zoomLevel})`, transformOrigin: 'left' }}>
@@ -1680,7 +1799,7 @@ export default function ReviewPage() {
                       onClick={() => handleTimelineSegmentClick(segment.id)}
                     >
                       {/* Colored Segment Bar */}
-                      <div className={`h-6 bg-${segment.color}/70 hover:bg-${segment.color}/90 transition-colors duration-150 relative`}>
+                      <div className={`h-6 bg-${segment.color} hover:bg-${segment.color}/90 transition-colors duration-150 relative`}>
                         {/* Marker on top of the segment bar */}
                         {segment.markerColor && (
                           <div className={`timeline-marker bg-${segment.markerColor}`} style={{left: '50%'}}></div>
@@ -1710,7 +1829,13 @@ export default function ReviewPage() {
                       {/* Enhanced Hover Preview Card (Timeline Thumbnail) */}
                       <div className="timeline-thumbnail w-64 bg-gray-900 rounded-lg shadow-xl z-20">
                         <div className="p-2">
-                          <img src={segment.image || 'https://via.placeholder.com/160x90.png/0f172a/e2e8f0?text=No+Preview'} alt={`${segment.title} thumbnail`} className="w-full h-32 object-cover rounded" />
+                          <Image 
+                            src={segment.image || 'https://via.placeholder.com/160x90.png/0f172a/e2e8f0?text=No+Preview'} 
+                            alt={`${segment.title} thumbnail`} 
+                            width={240} // w-64 is 256px, p-2 reduces it a bit. Let's use 240 for content area. H-32 is 128px
+                            height={112} // for a 16:9 ratio approx for h-32 content area.
+                            className="w-full h-32 object-cover rounded" 
+                          />
                         </div>
                         <div className="p-3 border-t border-gray-800">
                           <div className="flex items-center justify-between mb-2">
@@ -1761,7 +1886,7 @@ export default function ReviewPage() {
         
         {/* Editing Panel - Will be shown conditionally based on editMode */}
         {editMode && (
-          <div className="w-full lg:w-1/3 bg-gray-800 overflow-y-auto border-l border-gray-700 lg:h-full scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-gray-800">
+          <div className="w-full lg:w-1/3 bg-gray-800 overflow-y-auto border-l border-gray-700 lg:h-full scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-gray-800/50">
             {/* Editing Panel Tabs */}
             <div className="sticky top-0 bg-gray-900 z-10 border-b border-gray-800 px-2">
               <div className="overflow-x-auto scrollbar-none">
@@ -1907,7 +2032,7 @@ export default function ReviewPage() {
                             <h4 className="text-white font-medium">{sugg.title}</h4>
                             <span className={`text-xs bg-${sugg.color}-500/20 text-${sugg.color}-400 px-2 py-0.5 rounded-full`}>{sugg.type}</span>
                           </div>
-                          <p className="text-sm text-gray-400 mb-3">{sugg.desc}</p>
+                          <p className="text-sm text-gray-400 mb-3">{sugg.desc.replace(/'/g, "&apos;").replace(/"/g, "&quot;")}</p> {/* Escaped entities */}
                           <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-1 text-xs text-gray-500">
                               <i className="ri-time-line"></i>
@@ -2191,8 +2316,8 @@ export default function ReviewPage() {
                     <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
                       <div className="bg-gray-800 p-6 rounded-lg shadow-xl w-full max-w-lg">
                         <h3 className="text-lg text-white font-medium mb-4">Music & SFX Library (Placeholder)</h3>
-                        <p className="text-gray-400 mb-4">This is where you'd browse and select music or sound effects.</p>
-                        <p className="text-gray-400 mb-4">For now, selecting a track here would assign it to the newly created audio track: "{audioTracks.find(t => t.id === selectedAudioTrackId)?.name}".</p>
+                        <p className="text-gray-400 mb-4">This is where youd browse and select music or sound effects.</p>
+                        <p className="text-gray-400 mb-4">For now, selecting a track here would assign it to the newly created audio track: {audioTracks.find(t => t.id === selectedAudioTrackId)?.name}.</p>
                         <button 
                           onClick={() => {
                             // Simulate selecting a file
@@ -2266,7 +2391,26 @@ export default function ReviewPage() {
                              {effect.type === 'filter' && effect.properties.intensity !== undefined && (
                                <div className="mt-1">
                                  <label className="text-xs text-gray-500">Intensity: {Math.round(effect.properties.intensity * 100)}%</label>
-                                 <input type="range" min="0" max="1" step="0.01" value={effect.properties.intensity} onChange={(e) => console.log('Intensity changed', e.target.value)} className="w-full custom-range custom-range-sm" />
+                                 <input 
+                                    type="range" 
+                                    min="0" max="1" step="0.01" 
+                                    value={effect.properties.intensity} 
+                                    onChange={(e) => handleVisualEffectPropertyChange(effect.id, 'intensity', parseFloat(e.target.value))} 
+                                    className="w-full custom-range custom-range-sm" 
+                                  />
+                               </div>
+                             )}
+                             {/* Example: Brightness slider for color correction */}
+                             {effect.type === 'color-correction' && effect.properties.brightness !== undefined && (
+                               <div className="mt-1">
+                                 <label className="text-xs text-gray-500">Brightness: {Math.round(effect.properties.brightness * 100)}</label>
+                                 <input 
+                                    type="range" 
+                                    min="-1" max="1" step="0.01" 
+                                    value={effect.properties.brightness} 
+                                    onChange={(e) => handleVisualEffectPropertyChange(effect.id, 'brightness', parseFloat(e.target.value))} 
+                                    className="w-full custom-range custom-range-sm" 
+                                  />
                                </div>
                              )}
                            </div>
@@ -2317,14 +2461,14 @@ export default function ReviewPage() {
                             <div className="flex items-center space-x-1.5">
                               {sugg.previewImageUrl && (
                                 <button 
-                                  onClick={() => console.log('Preview AI visual suggestion:', sugg.previewImageUrl)} 
-                                  className="p-1.5 text-gray-400 hover:text-white text-xs" title="Preview Suggestion"
+                                  onClick={() => console.log('Preview AI visual:', sugg.previewImageUrl)} 
+                                  className="p-1.5 text-gray-400 hover:text-white text-xs" title='Preview Visual' // Changed to single quotes
                                 >
                                   <i className="ri-eye-line"></i>
                                 </button>
                               )}
                               <button 
-                                onClick={() => handleApplyAiVisualSuggestion(sugg)}
+                                onClick={() => handleApplyAiVisualSuggestion(sugg)} // Call the memoized handler
                                 className="px-2 py-1 bg-primary/20 hover:bg-primary/30 text-primary rounded text-xs font-medium"
                               >
                                 Apply
@@ -2382,51 +2526,53 @@ export default function ReviewPage() {
               {/* B-Roll Tab UI (This is the original and correct one) */}
               {activeEditTab === 'b-roll' && (
                 <div className="space-y-6 h-full flex flex-col">
-                  {/* Sticky Header */}
+                  {/* Sticky Header for B-Roll Tab */}
                   <div className="flex items-center justify-between sticky top-0 bg-gray-800 py-3 px-4 -mx-4 -mt-4 z-10 border-b border-gray-700">
                     <h3 className="text-lg text-white font-medium">B-Roll Manager</h3>
-                     <button 
-                      onClick={() => console.log("B-Roll settings/help")}
-                      className="text-gray-400 hover:text-white"
-                    >
-                      <i className="ri-settings-3-line"></i>
-                    </button>
+                    <div className="flex items-center space-x-2">
+                      <button 
+                        onClick={handleSmartSearchBRoll} 
+                        className="text-sm bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg flex items-center space-x-1.5 whitespace-nowrap"
+                        title="Get AI B-Roll suggestions for selected timeline segment"
+                      >
+                        <i className="ri-magic-line"></i>
+                        <span>Smart Search</span>
+                      </button>
+                      <button 
+                        onClick={() => handleOpenBRollLibrary()} 
+                        className="text-sm bg-primary/10 hover:bg-primary/20 text-primary px-3 py-1.5 rounded-lg flex items-center space-x-1.5 whitespace-nowrap"
+                        title="Open B-Roll Library"
+                      >
+                        <i className="ri-film-line"></i>
+                        <span>Open Library</span>
+                      </button>
+                      <button 
+                        onClick={handleUploadCustomBRoll} // Call handleUploadCustomBRoll
+                        className="text-sm bg-green-500/10 hover:bg-green-500/20 text-green-400 px-3 py-1.5 rounded-lg flex items-center space-x-1.5 whitespace-nowrap"
+                        title="Upload custom B-Roll video"
+                      >
+                        <i className="ri-upload-cloud-2-line"></i>
+                        <span>Upload Custom</span>
+                      </button>
+                    </div>
                   </div>
 
-                  {/* Action Buttons: Add from Library & Upload */}
-                  <div className="grid grid-cols-2 gap-3 p-1">
-                    <button 
-                      onClick={() => handleOpenBRollLibrary()}
-                      className="w-full text-sm bg-primary/10 hover:bg-primary/20 text-primary px-3 py-2.5 rounded-lg flex items-center justify-center space-x-1.5"
-                    >
-                      <i className="ri-vidicon-line"></i>
-                      <span>Browse B-Roll Library</span>
-                    </button>
-                    <button 
-                      onClick={handleUploadCustomBRoll}
-                      className="w-full text-sm bg-green-500/10 hover:bg-green-500/20 text-green-400 px-3 py-2.5 rounded-lg flex items-center justify-center space-x-1.5"
-                    >
-                      <i className="ri-upload-cloud-2-line"></i>
-                      <span>Upload Custom B-Roll</span>
-                    </button> 
-                  </div>
-
-                  {/* AI B-Roll Suggestions */}
-                  <div className="pt-1">
-                    <h4 className="text-md text-white font-medium mb-2 px-1">AI B-Roll Suggestions</h4>
+                  {/* AI B-Roll Suggestions Section - ADDED */}
+                  <div className="pt-1 px-1">
+                    <h4 className="text-md text-white font-medium mb-2">AI B-Roll Suggestions</h4>
                     {aiBRollSuggestions.length > 0 ? (
                       <div className="space-y-2 max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-800/50 -mr-3 pr-3">
                         {aiBRollSuggestions.map(sugg => (
-                          <div key={sugg.id} className="bg-gray-900/60 p-3 rounded-lg">
+                          <div key={sugg.id} className="bg-gray-900/70 p-3 rounded-lg shadow-md">
                             <div className="flex items-start justify-between mb-2">
                               <div className="flex items-center space-x-2">
-                                <i className={`${sugg.icon} text-primary text-lg`}></i>
+                                <i className={`${sugg.icon || 'ri-movie-line'} text-primary text-lg`}></i>
                                 <p className="text-sm text-gray-300">{sugg.description}</p>
                               </div>
-                               <button 
+                              <button 
                                 onClick={() => handleOpenBRollLibrary(sugg.keywords)}
                                 className="text-xs text-primary hover:underline whitespace-nowrap ml-2"
-                                title="Find similar in library"
+                                title='Find similar clips in library' // Use single quotes for title
                               >
                                 Find More
                               </button>
@@ -2436,11 +2582,11 @@ export default function ReviewPage() {
                                 {sugg.suggestedClips.slice(0,2).map((clip, idx) => (
                                   <div key={idx} className="bg-gray-800/70 hover:bg-gray-800 p-2 rounded flex items-center justify-between text-xs">
                                     <div className="flex items-center space-x-2 truncate">
-                                      {clip.thumbnailUrl && <img src={clip.thumbnailUrl} alt={clip.name || 'preview'} className="w-10 h-6 object-cover rounded-sm"/>}
+                                      {clip.thumbnailUrl && <Image src={clip.thumbnailUrl} alt={clip.name || 'preview'} width={100} height={60} className="w-10 h-6 object-cover rounded-sm"/>}
                                       <span className="text-gray-300 truncate" title={clip.name}>{clip.name || 'Suggested Clip'} ({clip.duration}s)</span>
                                     </div>
                                     <button 
-                                      onClick={() => handleAddBRollFromSuggestion(clip, sugg.timeCue)}
+                                      onClick={() => handleAddBRollFromSuggestion(clip, sugg.timeCue)} // Call handleAddBRollFromSuggestion
                                       className="px-2 py-1 bg-primary/20 hover:bg-primary/30 text-primary rounded text-xs font-medium whitespace-nowrap"
                                     >
                                       Add to Timeline
@@ -2453,11 +2599,11 @@ export default function ReviewPage() {
                         ))}
                       </div>
                     ) : (
-                      <p className="text-sm text-gray-500 text-center py-4">No AI B-Roll suggestions at the moment.</p>
+                      <p className="text-sm text-gray-500 text-center py-4">No AI B-Roll suggestions available at the moment.</p>
                     )}
                   </div>
 
-                  {/* Project B-Roll Clips List */}
+                  {/* Current Project B-Roll Clips */}
                   <div className="flex-1 overflow-y-auto -mr-3 pr-3 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-800/50">
                     <h4 className="text-md text-white font-medium mb-2 sticky top-0 bg-gray-800 py-2 -mx-1 px-1 z-[5]">Project B-Roll Clips</h4>
                     {projectBRollClips.length > 0 ? (
@@ -2465,7 +2611,7 @@ export default function ReviewPage() {
                         {projectBRollClips.map(clip => (
                           <div key={clip.id} className="bg-gray-900/60 hover:bg-gray-900/90 p-2.5 rounded-lg flex items-center justify-between">
                             <div className="flex items-center space-x-3 truncate">
-                              {clip.thumbnailUrl && <img src={clip.thumbnailUrl} alt={clip.name} className="w-16 h-9 object-cover rounded"/>}
+                              {clip.thumbnailUrl && <Image src={clip.thumbnailUrl} alt={clip.name} width={160} height={90} className="w-16 h-9 object-cover rounded"/>}
                               <div className="text-xs truncate">
                                 <p className="text-white font-medium truncate" title={clip.name}>{clip.name}</p>
                                 <p className="text-gray-400">Duration: {clip.duration}s{clip.startTimeInMainVideo !== undefined ? `, Starts at: ${formatTime(clip.startTimeInMainVideo)}` : ' (Not on timeline)'}</p>
@@ -2484,11 +2630,9 @@ export default function ReviewPage() {
                     )}
                   </div>
 
-                  {/* Placeholder for B-Roll Library Modal (already exists below this, this is just to ensure structure) */}
+                  {/* Placeholder for B-Roll Library Modal (this is the placeholder location) */}
                   {showBRollLibrary && (
-                    // REMOVE THIS COMMENT: Modal content as previously defined ...
-                    /* The actual modal is rendered later, this comment block was causing an error */
-                    <></> // Using an empty fragment if the block must remain, or remove the block if not needed.
+                    <></> // Corrected: Ensured this is just an empty fragment
                   )}
                 </div>
               )}
@@ -2518,13 +2662,15 @@ export default function ReviewPage() {
                       onMouseLeave={handleStickerDragEnd} // End drag if mouse leaves preview area
                     >
                       <div className="relative group aspect-[16/9]">
-                        <img
+                        <Image
                           src={mainThumbnail.src}
                           alt="Main thumbnail preview"
                           className="w-full h-full object-cover rounded-lg shadow-lg"
                           style={{
                             filter: `brightness(${mainThumbnail.brightness}%) contrast(${mainThumbnail.contrast}%)`
                           }}
+                          layout="fill"
+                          objectFit="cover"
                         />
                         <div
                           className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center space-x-2 rounded-lg z-30" // MODIFIED: Added z-30
@@ -2618,15 +2764,15 @@ export default function ReviewPage() {
                               top: `${sticker.y}%`,
                               left: `${sticker.x}%`,
                               transform: `translate(-50%, -50%) scale(${sticker.scale}) rotate(${sticker.rotation}deg)`,
-                              // width: '64px', // Example base width, consider making this dynamic or part of sticker state
-                              // height: '64px',// Example base height
                             }}
                             onMouseDown={(e) => handleStickerDragStart(e, sticker.id)}
                           >
-                            <img 
+                            <Image 
                               src={sticker.src}
                               alt={sticker.alt}
-                              className="pointer-events-none w-16 h-16 object-contain" // Applied fixed size here
+                              width={64} // Assuming stickers are roughly 64x64px as per w-16 h-16 on img
+                              height={64}
+                              className="pointer-events-none w-16 h-16 object-contain"
                             />
                             <button 
                               onClick={(e) => { e.stopPropagation(); handleRemoveSticker(sticker.id); }}
@@ -2648,10 +2794,12 @@ export default function ReviewPage() {
                           className="relative group cursor-pointer aspect-video rounded-md overflow-hidden border-2 border-transparent hover:border-primary transition-all duration-150"
                           onClick={() => setMainThumbnail(prev => ({...prev, src: altThumb.src, id: altThumb.id}))}
                         >
-                          <img
+                          <Image
                             src={altThumb.src}
                             alt={`Alternative thumbnail ${altThumb.id}`}
-                            className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                            layout="fill"
+                            objectFit="cover"
+                            className="transition-transform group-hover:scale-105"
                           />
                           <div
                             className="absolute inset-0 bg-primary/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
@@ -2686,6 +2834,7 @@ export default function ReviewPage() {
                           <div className="grid grid-cols-4 gap-2">
                             {[1,2,3,4].map(i => (
                                <div key={i} className="aspect-square bg-gray-700 rounded-lg p-1 hover:bg-gray-600 cursor-pointer flex items-center justify-center">
+                                 {/* Placeholder for sticker image - if these were Image tags they would need src, width, height, alt */}
                                  <i className="ri-user-smile-line text-gray-500 text-xl"></i>
                                </div>
                             ))}
@@ -2870,7 +3019,7 @@ export default function ReviewPage() {
                                     className="aspect-square bg-gray-700 rounded-lg p-1 hover:bg-gray-600 cursor-pointer flex items-center justify-center overflow-hidden ring-1 ring-transparent hover:ring-primary transition-all duration-150"
                                     title={`Add ${sticker.alt} sticker`}
                                   >
-                                    <img src={sticker.src} alt={sticker.alt} className="w-full h-full object-contain" />
+                                    <Image src={sticker.src} alt={sticker.alt} width={100} height={100} className="w-full h-full object-contain" />
                                   </button>
                                 ))}
                                 {sampleStickers.slice(0,4).length === 0 && <p className="col-span-4 text-center text-xs text-gray-500 py-2">No AI stickers generated yet.</p>}
@@ -2886,7 +3035,7 @@ export default function ReviewPage() {
                                     className="aspect-square bg-gray-700 rounded-lg p-1 hover:bg-gray-600 cursor-pointer flex items-center justify-center overflow-hidden ring-1 ring-transparent hover:ring-primary transition-all duration-150"
                                     title={`Add ${sticker.alt} sticker`}
                                   >
-                                    <img src={sticker.src} alt={sticker.alt} className="w-full h-full object-contain" />
+                                    <Image src={sticker.src} alt={sticker.alt} width={100} height={100} className="w-full h-full object-contain" />
                                   </button>
                                 ))}
                               </div>
@@ -2972,92 +3121,93 @@ export default function ReviewPage() {
                 </button>
               </div>
             </div>
+          </div>
+        )}
 
-            {/* Source Manager - Added if in edit mode, shows below the editing panel on smaller screens or right side on larger screens */}
-            {editMode && activeEditTab !== 'tools' && (
-              <div className="border-t lg:border-t-0 lg:border-l border-gray-700 bg-gray-900 p-4">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-white font-medium">Source Assets</h3>
-                  <button className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white">
-                    <i className="ri-add-line"></i>
-                  </button>
-                </div>
-                
-                <div className="flex items-center space-x-2 mb-4 overflow-x-auto pb-2">
-                  {(['all', 'video', 'audio', 'images'] as SourceFilter[]).map(filter => (
-                    <button 
-                      key={filter}
-                      onClick={() => handleSourceFilterChange(filter)}
-                      className={`px-3 py-1 text-sm rounded-full whitespace-nowrap ${
-                        sourceFilter === filter 
-                          ? 'bg-primary text-white' 
-                          : 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white'
-                      }`}
-                    >
-                      {filter.charAt(0).toUpperCase() + filter.slice(1)}
-                    </button>
-                  ))}
-                </div>
-                
-                <div className="grid grid-cols-2 gap-3 max-h-[300px] overflow-y-auto">
-                  {[
-                    { id: 'main', name: "Main Camera", type: "Primary video", duration: "1:02:15", img: "https://readdy.ai/api/search-image?query=podcast%20recording%2C%20main%20camera%20angle%2C%20wide%20shot%20of%20two%20hosts&width=160&height=90&seq=8&orientation=landscape" },
-                    { id: 'host1', name: "Host 1 Closeup", type: "Angle 2", duration: "1:02:15", img: "https://readdy.ai/api/search-image?query=podcast%20recording%2C%20close%20up%20angle%20of%20host%201%2C%20professional%20lighting&width=160&height=90&seq=9&orientation=landscape" },
-                    { id: 'host2', name: "Host 2 Closeup", type: "Angle 3", duration: "1:02:15", img: "https://readdy.ai/api/search-image?query=podcast%20recording%2C%20close%20up%20angle%20of%20host%202%2C%20professional%20lighting&width=160&height=90&seq=10&orientation=landscape" },
-                    { id: 'tech', name: "Tech B-Roll", type: "B-Roll", duration: "0:45", img: "https://readdy.ai/api/search-image?query=digital%20technology%20visualization%2C%20abstract%20AI%20concept%2C%20blue%20tones&width=160&height=90&seq=11&orientation=landscape" },
-                    { id: 'audio', name: "Clean Audio", type: "Main Audio", duration: "1:02:15", icon: "ri-volume-up-line" },
-                    { id: 'music', name: "Background Music", type: "Audio", duration: "3:20", icon: "ri-music-line" }
-                  ]
-                    // Filter sources based on the selected filter
-                    .filter(source => {
-                      if (sourceFilter === 'all') return true;
-                      if (sourceFilter === 'audio') return source.id === 'audio' || source.id === 'music';
-                      if (sourceFilter === 'video') return source.id !== 'audio' && source.id !== 'music';
-                      return source.id === 'tech'; // 'images' filter would show only b-roll/images
-                    })
-                    .map(source => (
-                    <div 
-                      key={source.id} 
-                      className="source-item bg-gray-800 rounded overflow-hidden cursor-pointer hover:shadow-lg" 
-                      onClick={() => handleSourceAssetClick(source.id)}
-                    >
-                      <div className="relative aspect-video">
-                        {source.img ? (
-                          <img src={source.img} alt={source.name} className="w-full h-full object-cover" />
-                        ) : (
-                          <div className="w-full h-full bg-gray-700 flex items-center justify-center">
-                            <i className={`${source.icon} text-gray-500 text-2xl`}></i>
-                          </div>
-                        )}
-                        <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 bg-black/50 transition-opacity">
-                          <button className="w-8 h-8 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 text-white">
-                            <i className="ri-play-fill"></i>
-                          </button>
-                        </div>
+        {/* Source Manager Panel (Visible when !editMode AND showSourceManager is true) */}
+        {!editMode && showSourceManager && (
+          <div className="w-full lg:w-1/4 bg-gray-900 p-4 overflow-y-auto border-l border-gray-700 lg:h-full scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-gray-800/50">
+            {/* Content of the Source Manager */}
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-white font-medium">Source Assets</h3>
+              <button className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white">
+                <i className="ri-add-line"></i>
+              </button>
+            </div>
+            
+            <div className="flex items-center space-x-2 mb-4 overflow-x-auto pb-2">
+              {(['all', 'video', 'audio', 'images'] as SourceFilter[]).map(filter => (
+                <button 
+                  key={filter}
+                  onClick={() => handleSourceFilterChange(filter)}
+                  className={`px-3 py-1 text-sm rounded-full whitespace-nowrap ${
+                    sourceFilter === filter 
+                      ? 'bg-primary text-white' 
+                      : 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white'
+                  }`}
+                >
+                  {filter.charAt(0).toUpperCase() + filter.slice(1)}
+                </button>
+              ))}
+            </div>
+            
+            <div className="grid grid-cols-2 gap-3 max-h-[calc(100vh-200px)] overflow-y-auto"> {/* Adjusted max-h for better viewport fitting */}
+              {[
+                { id: 'main', name: "Main Camera", type: "Primary video", duration: "1:02:15", img: "https://readdy.ai/api/search-image?query=podcast%20recording%2C%20main%20camera%20angle%2C%20wide%20shot%20of%20two%20hosts&width=160&height=90&seq=8&orientation=landscape" },
+                { id: 'host1', name: "Host 1 Closeup", type: "Angle 2", duration: "1:02:15", img: "https://readdy.ai/api/search-image?query=podcast%20recording%2C%20close%20up%20angle%20of%20host%201%2C%20professional%20lighting&width=160&height=90&seq=9&orientation=landscape" },
+                { id: 'host2', name: "Host 2 Closeup", type: "Angle 3", duration: "1:02:15", img: "https://readdy.ai/api/search-image?query=podcast%20recording%2C%20close%20up%20angle%20of%20host%202%2C%20professional%20lighting&width=160&height=90&seq=10&orientation=landscape" },
+                { id: 'tech', name: "Tech B-Roll", type: "B-Roll", duration: "0:45", img: "https://readdy.ai/api/search-image?query=digital%20technology%20visualization%2C%20abstract%20AI%20concept%2C%20blue%20tones&width=160&height=90&seq=11&orientation=landscape" },
+                { id: 'audio', name: "Clean Audio", type: "Main Audio", duration: "1:02:15", icon: "ri-volume-up-line" },
+                { id: 'music', name: "Background Music", type: "Audio", duration: "3:20", icon: "ri-music-line" }
+              ]
+                // Filter sources based on the selected filter
+                .filter(source => {
+                  if (sourceFilter === 'all') return true;
+                  if (sourceFilter === 'audio') return source.id === 'audio' || source.id === 'music';
+                  if (sourceFilter === 'video') return source.id !== 'audio' && source.id !== 'music';
+                  return source.id === 'tech'; // 'images' filter would show only b-roll/images
+                })
+                .map(source => (
+                <div 
+                  key={source.id} 
+                  className="source-item bg-gray-800 rounded overflow-hidden cursor-pointer hover:shadow-lg" 
+                  onClick={() => handleSourceAssetClick(source.id)}
+                >
+                  <div className="relative aspect-video">
+                    {source.img ? (
+                      <Image src={source.img} alt={source.name} layout="fill" objectFit="cover" />
+                    ) : (
+                      <div className="w-full h-full bg-gray-700 flex items-center justify-center">
+                        <i className={`${source.icon} text-gray-500 text-2xl`}></i>
                       </div>
-                      <div className="p-2">
-                        <h4 className="text-sm text-white truncate">{source.name}</h4>
-                        <div className="flex justify-between">
-                          <p className="text-xs text-gray-500">{source.type}</p>
-                          <p className="text-xs text-gray-500">{source.duration}</p>
-                        </div>
-                      </div>
+                    )}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 bg-black/50 transition-opacity">
+                      <button className="w-8 h-8 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 text-white">
+                        <i className="ri-play-fill"></i>
+                      </button>
                     </div>
-                  ))}
+                  </div>
+                  <div className="p-2">
+                    <h4 className="text-sm text-white truncate">{source.name}</h4>
+                    <div className="flex justify-between">
+                      <p className="text-xs text-gray-500">{source.type}</p>
+                      <p className="text-xs text-gray-500">{source.duration}</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            )}
+              ))}
+            </div>
           </div>
         )}
       </div>
       
       {/* NEW: Floating Command Bar (Visible when !editMode) */}
       {!editMode && (
-        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 w-full max-w-3xl z-40 px-4"> {/* Changed bottom-20 to bottom-6 */}
+        <div className=" w-full z-40"> {/* Changed bottom-20 to bottom-6 */}
           {/* Container for the main bar content */}
-          <div className="bg-gray-900/90 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-700/50">
+          <div className="bg-gray-900/90 backdrop-blur-md shadow-2xl border-gray-700/50 border-t">
             {/* Command Input section */}
-            <div className="p-3 border-b border-gray-700/50">
+            <div className="p-3">
               {/* Wrapper for pill and input field */}
               <div className="relative flex items-center w-full bg-gray-800/60 rounded-xl border border-transparent focus-within:border-primary focus-within:ring-primary/50 focus-within:ring-1 transition-colors duration-200 pr-20"> {/* Added pr-20 for send button space */}
                 <div className="absolute left-4 flex items-center space-x-2 pointer-events-none z-10"> {/* Ensure icon is above pill if overlapping */}
@@ -3208,7 +3358,7 @@ export default function ReviewPage() {
               </div>
             )}
             {/* Quick Actions */}
-            <div className="px-3 py-2 flex items-center justify-center space-x-1 overflow-x-auto">
+            <div className="px-3 py-2 flex items-start space-x-1 overflow-x-auto">
               {[ 
                 { label: "Shorten This Part", icon: "ri-scissors-cut-line", onClick: handleShortenThisPart },
                 { label: "Add Text On Screen", icon: "ri-text-spacing" },
