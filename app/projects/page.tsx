@@ -15,7 +15,7 @@ const projectsData = [
   {
     id: '123456',
     title: 'Ultimate Guide to Camera Settings',
-    thumbnail: 'https://readdy.ai/api/search-image?query=camera%20settings%20guide%20filming%20high%20quality%20tutorial%20professional%20equipment&width=360&height=202&seq=550&orientation=landscape',
+    thumbnail: 'https://novocabs.com/api/search-image?query=camera%20settings%20guide%20filming%20high%20quality%20tutorial%20professional%20equipment&width=360&height=202&seq=550&orientation=landscape',
     uploadDate: '2023-04-28T14:30:00Z',
     duration: '32:45',
     status: 'completed', // 'uploading', 'processing', 'completed', 'failed'
@@ -25,7 +25,7 @@ const projectsData = [
   {
     id: '123457',
     title: 'Top 10 Lightroom Presets for Landscape Photography',
-    thumbnail: 'https://readdy.ai/api/search-image?query=landscape%20photography%20beautiful%20nature%20editing%20process%20mountains%20sunset&width=360&height=202&seq=551&orientation=landscape',
+    thumbnail: 'https://novocabs.com/api/search-image?query=landscape%20photography%20beautiful%20nature%20editing%20process%20mountains%20sunset&width=360&height=202&seq=551&orientation=landscape',
     uploadDate: '2023-04-25T10:15:00Z',
     duration: '18:22',
     status: 'completed',
@@ -35,7 +35,7 @@ const projectsData = [
   {
     id: '123458',
     title: 'Interview with Photography Expert Sarah Johnson',
-    thumbnail: 'https://readdy.ai/api/search-image?query=photography%20interview%20professional%20photographer%20studio%20equipment%20talking%20about%20techniques&width=360&height=202&seq=552&orientation=landscape',
+    thumbnail: 'https://novocabs.com/api/search-image?query=photography%20interview%20professional%20photographer%20studio%20equipment%20talking%20about%20techniques&width=360&height=202&seq=552&orientation=landscape',
     uploadDate: '2023-04-22T09:45:00Z',
     duration: '45:12',
     status: 'processing',
@@ -45,7 +45,7 @@ const projectsData = [
   {
     id: '123459',
     title: 'Behind the Scenes: Product Photoshoot',
-    thumbnail: 'https://readdy.ai/api/search-image?query=product%20photography%20behind%20the%20scenes%20studio%20setup%20lighting%20professional%20equipment&width=360&height=202&seq=553&orientation=landscape',
+    thumbnail: 'https://novocabs.com/api/search-image?query=product%20photography%20behind%20the%20scenes%20studio%20setup%20lighting%20professional%20equipment&width=360&height=202&seq=553&orientation=landscape',
     uploadDate: '2023-04-20T16:20:00Z',
     duration: '27:35',
     status: 'completed',
@@ -55,7 +55,7 @@ const projectsData = [
   {
     id: '123460',
     title: 'Photography Composition Rules You Need to Know',
-    thumbnail: 'https://readdy.ai/api/search-image?query=photography%20composition%20rules%20demonstrated%20with%20examples%20professional%20camera&width=360&height=202&seq=554&orientation=landscape',
+    thumbnail: 'https://novocabs.com/api/search-image?query=photography%20composition%20rules%20demonstrated%20with%20examples%20professional%20camera&width=360&height=202&seq=554&orientation=landscape',
     uploadDate: '2023-04-18T11:30:00Z',
     duration: '22:18',
     status: 'completed',
@@ -65,7 +65,7 @@ const projectsData = [
   {
     id: '123461',
     title: 'Street Photography Tips and Tricks',
-    thumbnail: 'https://readdy.ai/api/search-image?query=street%20photography%20urban%20environment%20candid%20shots%20city%20life&width=360&height=202&seq=555&orientation=landscape',
+    thumbnail: 'https://novocabs.com/api/search-image?query=street%20photography%20urban%20environment%20candid%20shots%20city%20life&width=360&height=202&seq=555&orientation=landscape',
     uploadDate: '2023-04-15T13:45:00Z',
     duration: '19:56',
     status: 'completed',
@@ -141,7 +141,7 @@ export default function ProjectsPage() {
         ...backgroundItems.map(item => ({
           id: item.id,
           title: item.name,
-          thumbnail: projectsData.find(p=>p.id === item.id)?.thumbnail || 'https://readdy.ai/api/search-image?query=abstract%20tech%20background&width=160&height=90&seq=99&orientation=landscape',
+          thumbnail: projectsData.find(p=>p.id === item.id)?.thumbnail || 'https://novocabs.com/api/search-image?query=abstract%20tech%20background&width=160&height=90&seq=99&orientation=landscape',
           uploadDate: new Date().toISOString(), // Placeholder, as bgItem doesn't have this
           duration: projectsData.find(p=>p.id === item.id)?.duration || 'N/A',
           status: item.status as UploadStatus, // Cast to UploadStatus
@@ -257,7 +257,7 @@ export default function ProjectsPage() {
                         title: item.name,
                         status: item.status, // Should be UploadStatus
                         progress: item.progress,
-                        thumbnailUrl: fullProjectData?.thumbnail || 'https://readdy.ai/api/search-image?query=abstract%20tech%20background&width=360&height=202&seq=99&orientation=landscape', // Placeholder if not found
+                        thumbnailUrl: fullProjectData?.thumbnail || 'https://novocabs.com/api/search-image?query=abstract%20tech%20background&width=360&height=202&seq=99&orientation=landscape', // Placeholder if not found
                         originalLength: fullProjectData?.duration || 'N/A',
                         clipsGenerated: fullProjectData?.clipCount || 0,
                       }}

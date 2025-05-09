@@ -122,12 +122,12 @@ interface LibraryBRollClip extends BRollClip {
 
 // Sample data for the timeline segments
 const timelineSegments = [
-  { id: 'intro', title: 'Intro', startTime: '0:00', endTime: '4:45', color: 'blue-500', width: '8', image: 'https://readdy.ai/api/search-image?query=podcast%20intro%20screen%20with%20logo%20and%20host%20introduction%2C%20professional%20lighting%2C%20studio%20environment&width=160&height=90&seq=2&orientation=landscape', keywords: ['introduction', 'podcast opening', 'welcome', 'logo reveal'] },
-  { id: 'topic1', title: 'AI Basics', startTime: '4:45', endTime: '13:30', color: 'green-500', width: '15', markerColor: 'blue-400', image: 'https://readdy.ai/api/search-image?query=two%20people%20discussing%20in%20podcast%20studio%2C%20close%20up%20shot%2C%20animated%20conversation%2C%20professional%20lighting&width=160&height=90&seq=3&orientation=landscape', keywords: ['artificial intelligence', 'machine learning', 'neural networks', 'tech concepts', 'data'] },
-  { id: 'content-creation', title: 'Content Creation', startTime: '13:30', endTime: '25:15', color: 'purple-500', width: '18', markerColor: 'orange-400', image: 'https://readdy.ai/api/search-image?query=podcast%20b-roll%20showing%20AI%20technology%20visualization%2C%20digital%20interface%2C%20data%20visualization&width=160&height=90&seq=4&orientation=landscape', keywords: ['video production', 'creativity', 'digital tools', 'editing software', 'graphic design'] },
-  { id: 'interview', title: 'Expert Interview', startTime: '25:15', endTime: '38:30', color: 'yellow-500', width: '22', markerColor: 'red-400', image: 'https://readdy.ai/api/search-image?query=podcast%20interview%20with%20guest%20expert%2C%20three%20people%20in%20conversation%2C%20professional%20studio%20setup%20with%20multiple%20camera%20angles&width=160&height=90&seq=5&orientation=landscape', keywords: ['interview', 'expert discussion', 'conversation', 'studio guest', 'professional talk'] },
-  { id: 'future-trends', title: 'Future Trends', startTime: '38:30', endTime: '50:15', color: 'teal-500', width: '20', markerColor: 'green-400', image: 'https://readdy.ai/api/search-image?query=podcast%20hosts%20discussing%20future%20technology%2C%20animated%20hand%20gestures%2C%20close%20up%20shot%20with%20shallow%20depth%20of%20field&width=160&height=90&seq=6&orientation=landscape', keywords: ['future technology', 'innovation', 'predictions', 'emerging tech', 'advancements'] },
-  { id: 'conclusion', title: 'Conclusion', startTime: '50:15', endTime: '58:21', color: 'blue-500', width: '17', markerColor: 'purple-400', image: 'https://readdy.ai/api/search-image?query=podcast%20outro%20with%20hosts%20concluding%20discussion%2C%20call%20to%20action%20graphics%2C%20professional%20lighting&width=160&height=90&seq=7&orientation=landscape', keywords: ['summary', 'final thoughts', 'call to action', 'podcast ending', 'credits'] },
+  { id: 'intro', title: 'Intro', startTime: '0:00', endTime: '4:45', color: 'blue-500', width: '8', image: 'https://novocabs.com/api/search-image?query=podcast%20intro%20screen%20with%20logo%20and%20host%20introduction%2C%20professional%20lighting%2C%20studio%20environment&width=160&height=90&seq=2&orientation=landscape', keywords: ['introduction', 'podcast opening', 'welcome', 'logo reveal'] },
+  { id: 'topic1', title: 'AI Basics', startTime: '4:45', endTime: '13:30', color: 'green-500', width: '15', markerColor: 'blue-400', image: 'https://novocabs.com/api/search-image?query=two%20people%20discussing%20in%20podcast%20studio%2C%20close%20up%20shot%2C%20animated%20conversation%2C%20professional%20lighting&width=160&height=90&seq=3&orientation=landscape', keywords: ['artificial intelligence', 'machine learning', 'neural networks', 'tech concepts', 'data'] },
+  { id: 'content-creation', title: 'Content Creation', startTime: '13:30', endTime: '25:15', color: 'purple-500', width: '18', markerColor: 'orange-400', image: 'https://novocabs.com/api/search-image?query=podcast%20b-roll%20showing%20AI%20technology%20visualization%2C%20digital%20interface%2C%20data%20visualization&width=160&height=90&seq=4&orientation=landscape', keywords: ['video production', 'creativity', 'digital tools', 'editing software', 'graphic design'] },
+  { id: 'interview', title: 'Expert Interview', startTime: '25:15', endTime: '38:30', color: 'yellow-500', width: '22', markerColor: 'red-400', image: 'https://novocabs.com/api/search-image?query=podcast%20interview%20with%20guest%20expert%2C%20three%20people%20in%20conversation%2C%20professional%20studio%20setup%20with%20multiple%20camera%20angles&width=160&height=90&seq=5&orientation=landscape', keywords: ['interview', 'expert discussion', 'conversation', 'studio guest', 'professional talk'] },
+  { id: 'future-trends', title: 'Future Trends', startTime: '38:30', endTime: '50:15', color: 'teal-500', width: '20', markerColor: 'green-400', image: 'https://novocabs.com/api/search-image?query=podcast%20hosts%20discussing%20future%20technology%2C%20animated%20hand%20gestures%2C%20close%20up%20shot%20with%20shallow%20depth%20of%20field&width=160&height=90&seq=6&orientation=landscape', keywords: ['future technology', 'innovation', 'predictions', 'emerging tech', 'advancements'] },
+  { id: 'conclusion', title: 'Conclusion', startTime: '50:15', endTime: '58:21', color: 'blue-500', width: '17', markerColor: 'purple-400', image: 'https://novocabs.com/api/search-image?query=podcast%20outro%20with%20hosts%20concluding%20discussion%2C%20call%20to%20action%20graphics%2C%20professional%20lighting&width=160&height=90&seq=7&orientation=landscape', keywords: ['summary', 'final thoughts', 'call to action', 'podcast ending', 'credits'] },
 ];
 
 // Sample AI suggestions
@@ -251,7 +251,7 @@ export default function ReviewPage() {
       id: 'vis-sugg1',
       description: "Improve face lighting for Host 1 at 2:15-3:00. It&apos;s a bit dark.", // Escaped apostrophe
       timeCue: "2:15-3:00",
-      previewImageUrl: 'https://readdy.ai/api/search-image?query=dark%20face%20lighting%20in%20video%20call&width=120&height=68&seq=vs1',
+      previewImageUrl: 'https://novocabs.com/api/search-image?query=dark%20face%20lighting%20in%20video%20call&width=120&height=68&seq=vs1',
       effectType: 'lighting',
       icon: 'ri-lightbulb-flash-line',
       details: { brightnessTarget: 0.15, targetArea: 'face-host1' }
@@ -260,7 +260,7 @@ export default function ReviewPage() {
       id: 'vis-sugg2',
       description: "Consider a tighter frame on the speaker during the anecdote at 10:05. Current shot is too wide.", // No apostrophe here
       timeCue: "10:05-10:30",
-      previewImageUrl: 'https://readdy.ai/api/search-image?query=wide%20shot%20of%20speaker%20vs%20medium%20shot&width=120&height=68&seq=vs2',
+      previewImageUrl: 'https://novocabs.com/api/search-image?query=wide%20shot%20of%20speaker%20vs%20medium%20shot&width=120&height=68&seq=vs2',
       effectType: 'framing',
       icon: 'ri-focus-3-line',
       details: { zoomFactor: 1.5, cropRect: { top: 0.1, right: 0.1, bottom: 0.1, left: 0.1 } }
@@ -287,7 +287,7 @@ export default function ReviewPage() {
 
   // State for B-Roll Tab
   const [projectBRollClips, setProjectBRollClips] = useState<BRollClip[]>([
-    { id: 'broll1', name: 'Tech Visualization Montage', videoUrl: '/broll/tech_viz.mp4', thumbnailUrl: 'https://readdy.ai/api/search-image?query=digital%20technology%20visualization%2C%20abstract%20AI%20concept%2C%20blue%20tones&width=160&height=90&seq=11&orientation=landscape', source: 'project-asset', duration: 15, startTimeInMainVideo: 930 }, // 15:30
+    { id: 'broll1', name: 'Tech Visualization Montage', videoUrl: '/broll/tech_viz.mp4', thumbnailUrl: 'https://novocabs.com/api/search-image?query=digital%20technology%20visualization%2C%20abstract%20AI%20concept%2C%20blue%20tones&width=160&height=90&seq=11&orientation=landscape', source: 'project-asset', duration: 15, startTimeInMainVideo: 930 }, // 15:30
   ]);
   const [aiBRollSuggestions, setAiBRollSuggestions] = useState<AiBRollSuggestion[]>([
     {
@@ -297,8 +297,8 @@ export default function ReviewPage() {
       timeCue: "5:00-10:00",
       icon: 'ri-lightbulb-flash-line',
       suggestedClips: [
-        { name: 'Abstract Neural Network', thumbnailUrl: 'https://readdy.ai/api/search-image?query=abstract%20neural%20network%20animation&width=160&height=90&seq=20&orientation=landscape', videoUrl: '/library/abstract_nn.mp4', duration: 10 },
-        { name: 'Coding on Screen Close-up', thumbnailUrl: 'https://readdy.ai/api/search-image?query=coding%20on%20screen%20close%20up&width=160&height=90&seq=21&orientation=landscape', videoUrl: '/library/coding_closeup.mp4', duration: 8 },
+        { name: 'Abstract Neural Network', thumbnailUrl: 'https://novocabs.com/api/search-image?query=abstract%20neural%20network%20animation&width=160&height=90&seq=20&orientation=landscape', videoUrl: '/library/abstract_nn.mp4', duration: 10 },
+        { name: 'Coding on Screen Close-up', thumbnailUrl: 'https://novocabs.com/api/search-image?query=coding%20on%20screen%20close%20up&width=160&height=90&seq=21&orientation=landscape', videoUrl: '/library/coding_closeup.mp4', duration: 8 },
       ]
     },
     {
@@ -308,7 +308,7 @@ export default function ReviewPage() {
       timeCue: "13:30-25:15",
       icon: 'ri-team-line',
       suggestedClips: [
-        { name: 'Diverse Team Brainstorming', thumbnailUrl: 'https://readdy.ai/api/search-image?query=diverse%20team%20brainstorming%20office&width=160&height=90&seq=22&orientation=landscape', videoUrl: '/library/team_brainstorm.mp4', duration: 12 },
+        { name: 'Diverse Team Brainstorming', thumbnailUrl: 'https://novocabs.com/api/search-image?query=diverse%20team%20brainstorming%20office&width=160&height=90&seq=22&orientation=landscape', videoUrl: '/library/team_brainstorm.mp4', duration: 12 },
       ]
     },
   ]);
@@ -322,19 +322,19 @@ export default function ReviewPage() {
   const [selectedLibraryClip, setSelectedLibraryClip] = useState<LibraryBRollClip | null>(null);
   // Simulated master list of library clips
   const [masterLibraryClips, setMasterLibraryClips] = useState<LibraryBRollClip[]>([
-    { id: 'lib-c1', name: 'Abstract Neural Network Loop', videoUrl: '/library/abstract_nn.mp4', thumbnailUrl: 'https://readdy.ai/api/search-image?query=abstract%20neural%20network%20animation&width=160&height=90&seq=20&orientation=landscape', source: 'ai-library', duration: 12, tags: ['tech', 'ai', 'abstract', 'loop'], mood: ['futuristic', 'complex'], resolution: '1080p', orientation: 'landscape', description: 'A mesmerizing loop of an abstract neural network visualization.', license: 'Royalty-Free' },
-    { id: 'lib-c2', name: 'Coding on Screen', videoUrl: '/library/coding_closeup.mp4', thumbnailUrl: 'https://readdy.ai/api/search-image?query=coding%20on%20screen%20close%20up&width=160&height=90&seq=21&orientation=landscape', source: 'ai-library', duration: 8, tags: ['tech', 'programming', 'code', 'computer'], mood: ['focused', 'modern'], resolution: '1080p', orientation: 'landscape', description: 'Close-up shot of code being written on a screen.', license: 'Royalty-Free' },
-    { id: 'lib-c3', name: 'Diverse Team Brainstorming Session', videoUrl: '/library/team_brainstorm.mp4', thumbnailUrl: 'https://readdy.ai/api/search-image?query=diverse%20team%20brainstorming%20office&width=160&height=90&seq=22&orientation=landscape', source: 'ai-library', duration: 15, tags: ['business', 'team', 'collaboration', 'office', 'people'], mood: ['positive', 'energetic'], resolution: '4K', orientation: 'landscape', description: 'A diverse group of professionals brainstorming in a modern office.', license: 'Royalty-Free' },
-    { id: 'lib-c4', name: 'Drone Shot of Mountains', videoUrl: '/library/mountains_drone.mp4', thumbnailUrl: 'https://readdy.ai/api/search-image?query=drone%20shot%20mountains&width=160&height=90&seq=23&orientation=landscape', source: 'ai-library', duration: 20, tags: ['nature', 'landscape', 'mountains', 'aerial', 'travel'], mood: ['epic', 'calm'], resolution: '4K', orientation: 'landscape', description: 'Breathtaking aerial footage of majestic mountains.', license: 'Royalty-Free' },
-    { id: 'lib-c5', name: 'City Traffic Timelapse', videoUrl: '/library/city_traffic_timelapse.mp4', thumbnailUrl: 'https://readdy.ai/api/search-image?query=city%20traffic%20timelapse&width=160&height=90&seq=24&orientation=landscape', source: 'ai-library', duration: 10, tags: ['city', 'urban', 'timelapse', 'cars', 'transport'], mood: ['busy', 'dynamic'], resolution: '1080p', orientation: 'landscape', description: 'A fast-paced timelapse of city traffic at night.', license: 'Royalty-Free' },
-    { id: 'lib-c6', name: 'Person Typing on Laptop (Portrait)', videoUrl: '/library/typing_portrait.mp4', thumbnailUrl: 'https://readdy.ai/api/search-image?query=person%20typing%20laptop%20portrait&width=90&height=160&seq=26&orientation=portrait', source: 'ai-library', duration: 7, tags: ['work', 'laptop', 'typing', 'remote'], mood: ['neutral'], resolution: '1080p', orientation: 'portrait', description: 'Vertical shot of hands typing on a laptop.', license: 'Royalty-Free' }
+    { id: 'lib-c1', name: 'Abstract Neural Network Loop', videoUrl: '/library/abstract_nn.mp4', thumbnailUrl: 'https://novocabs.com/api/search-image?query=abstract%20neural%20network%20animation&width=160&height=90&seq=20&orientation=landscape', source: 'ai-library', duration: 12, tags: ['tech', 'ai', 'abstract', 'loop'], mood: ['futuristic', 'complex'], resolution: '1080p', orientation: 'landscape', description: 'A mesmerizing loop of an abstract neural network visualization.', license: 'Royalty-Free' },
+    { id: 'lib-c2', name: 'Coding on Screen', videoUrl: '/library/coding_closeup.mp4', thumbnailUrl: 'https://novocabs.com/api/search-image?query=coding%20on%20screen%20close%20up&width=160&height=90&seq=21&orientation=landscape', source: 'ai-library', duration: 8, tags: ['tech', 'programming', 'code', 'computer'], mood: ['focused', 'modern'], resolution: '1080p', orientation: 'landscape', description: 'Close-up shot of code being written on a screen.', license: 'Royalty-Free' },
+    { id: 'lib-c3', name: 'Diverse Team Brainstorming Session', videoUrl: '/library/team_brainstorm.mp4', thumbnailUrl: 'https://novocabs.com/api/search-image?query=diverse%20team%20brainstorming%20office&width=160&height=90&seq=22&orientation=landscape', source: 'ai-library', duration: 15, tags: ['business', 'team', 'collaboration', 'office', 'people'], mood: ['positive', 'energetic'], resolution: '4K', orientation: 'landscape', description: 'A diverse group of professionals brainstorming in a modern office.', license: 'Royalty-Free' },
+    { id: 'lib-c4', name: 'Drone Shot of Mountains', videoUrl: '/library/mountains_drone.mp4', thumbnailUrl: 'https://novocabs.com/api/search-image?query=drone%20shot%20mountains&width=160&height=90&seq=23&orientation=landscape', source: 'ai-library', duration: 20, tags: ['nature', 'landscape', 'mountains', 'aerial', 'travel'], mood: ['epic', 'calm'], resolution: '4K', orientation: 'landscape', description: 'Breathtaking aerial footage of majestic mountains.', license: 'Royalty-Free' },
+    { id: 'lib-c5', name: 'City Traffic Timelapse', videoUrl: '/library/city_traffic_timelapse.mp4', thumbnailUrl: 'https://novocabs.com/api/search-image?query=city%20traffic%20timelapse&width=160&height=90&seq=24&orientation=landscape', source: 'ai-library', duration: 10, tags: ['city', 'urban', 'timelapse', 'cars', 'transport'], mood: ['busy', 'dynamic'], resolution: '1080p', orientation: 'landscape', description: 'A fast-paced timelapse of city traffic at night.', license: 'Royalty-Free' },
+    { id: 'lib-c6', name: 'Person Typing on Laptop (Portrait)', videoUrl: '/library/typing_portrait.mp4', thumbnailUrl: 'https://novocabs.com/api/search-image?query=person%20typing%20laptop%20portrait&width=90&height=160&seq=26&orientation=portrait', source: 'ai-library', duration: 7, tags: ['work', 'laptop', 'typing', 'remote'], mood: ['neutral'], resolution: '1080p', orientation: 'portrait', description: 'Vertical shot of hands typing on a laptop.', license: 'Royalty-Free' }
   ]);
   const [filteredLibraryClips, setFilteredLibraryClips] = useState<LibraryBRollClip[]>([]);
 
   // State for Thumbnail Generator Tab
   const [mainThumbnail, setMainThumbnail] = useState({
     id: 'main-thumb-1',
-    src: 'https://readdy.ai/api/search-image?query=excited%20host%20pointing%20at%20futuristic%20AI%20visualization%2C%20dramatic%20lighting%2C%20cutout%20person%20composited%20onto%20tech%20background%2C%20YouTube%20thumbnail%20style%2C%20high%20energy%20expression%2C%20professional%20quality&width=600&height=338&seq=13&orientation=landscape',
+    src: 'https://novocabs.com/api/search-image?query=excited%20host%20pointing%20at%20futuristic%20AI%20visualization%2C%20dramatic%20lighting%2C%20cutout%20person%20composited%20onto%20tech%20background%2C%20YouTube%20thumbnail%20style%2C%20high%20energy%20expression%2C%20professional%20quality&width=600&height=338&seq=13&orientation=landscape',
     title: 'AI REVOLUTION IN CONTENT CREATION',
     brightness: 50,
     contrast: 50,
@@ -345,9 +345,9 @@ export default function ReviewPage() {
     } as React.CSSProperties, // Type assertion
   });
   const [alternativeThumbnails, setAlternativeThumbnails] = useState([
-    { id: 'alt-thumb-1', src: 'https://readdy.ai/api/search-image?query=podcast%20hosts%20engaged%20in%20animated%20discussion%2C%20close%20up%20shot%2C%20professional%20lighting%2C%20dynamic%20composition&width=200&height=113&seq=14&orientation=landscape' },
-    { id: 'alt-thumb-2', src: 'https://readdy.ai/api/search-image?query=technology%20visualization%20with%20podcast%20hosts%20in%20background%2C%20modern%20studio%20setup%2C%20professional%20equipment&width=200&height=113&seq=15&orientation=landscape' },
-    { id: 'alt-thumb-3', src: 'https://readdy.ai/api/search-image?query=podcast%20studio%20environment%20with%20AI%20visualization%20overlay%2C%20professional%20lighting%2C%20engaging%20composition&width=200&height=113&seq=16&orientation=landscape' },
+    { id: 'alt-thumb-1', src: 'https://novocabs.com/api/search-image?query=podcast%20hosts%20engaged%20in%20animated%20discussion%2C%20close%20up%20shot%2C%20professional%20lighting%2C%20dynamic%20composition&width=200&height=113&seq=14&orientation=landscape' },
+    { id: 'alt-thumb-2', src: 'https://novocabs.com/api/search-image?query=technology%20visualization%20with%20podcast%20hosts%20in%20background%2C%20modern%20studio%20setup%2C%20professional%20equipment&width=200&height=113&seq=15&orientation=landscape' },
+    { id: 'alt-thumb-3', src: 'https://novocabs.com/api/search-image?query=podcast%20studio%20environment%20with%20AI%20visualization%20overlay%2C%20professional%20lighting%2C%20engaging%20composition&width=200&height=113&seq=16&orientation=landscape' },
   ]);
   const [selectedTextEffect, setSelectedTextEffect] = useState<string | null>(null);
   const [selectedLayout, setSelectedLayout] = useState<string | null>(null);
@@ -444,10 +444,10 @@ export default function ReviewPage() {
   ], []);
 
   const sampleStickers = useMemo(() => [
-    { id: 'sticker1', alt: 'Excited person', src: 'https://readdy.ai/api/search-image?query=excited%20person%20pointing%20upward%2C%20cutout%20style%2C%20transparent%20background%2C%20dramatic%20expression&width=100&height=100&seq=20&orientation=squarish' },
-    { id: 'sticker2', alt: 'Shocked face', src: 'https://readdy.ai/api/search-image?query=shocked%20face%20with%20hands%20on%20cheeks%2C%20cutout%20style%2C%20transparent%20background%2C%20dramatic%20reaction&width=100&height=100&seq=21&orientation=squarish' },
-    { id: 'sticker3', alt: 'Arrow effect', src: 'https://readdy.ai/api/search-image?query=arrow%20pointing%20effect%2C%20neon%20style%2C%20transparent%20background&width=100&height=100&seq=22&orientation=squarish' },
-    { id: 'sticker4', alt: 'Explosion effect', src: 'https://readdy.ai/api/search-image?query=explosion%20effect%20sticker%2C%20comic%20style%2C%20transparent%20background&width=100&height=100&seq=23&orientation=squarish' },
+    { id: 'sticker1', alt: 'Excited person', src: 'https://novocabs.com/api/search-image?query=excited%20person%20pointing%20upward%2C%20cutout%20style%2C%20transparent%20background%2C%20dramatic%20expression&width=100&height=100&seq=20&orientation=squarish' },
+    { id: 'sticker2', alt: 'Shocked face', src: 'https://novocabs.com/api/search-image?query=shocked%20face%20with%20hands%20on%20cheeks%2C%20cutout%20style%2C%20transparent%20background%2C%20dramatic%20reaction&width=100&height=100&seq=21&orientation=squarish' },
+    { id: 'sticker3', alt: 'Arrow effect', src: 'https://novocabs.com/api/search-image?query=arrow%20pointing%20effect%2C%20neon%20style%2C%20transparent%20background&width=100&height=100&seq=22&orientation=squarish' },
+    { id: 'sticker4', alt: 'Explosion effect', src: 'https://novocabs.com/api/search-image?query=explosion%20effect%20sticker%2C%20comic%20style%2C%20transparent%20background&width=100&height=100&seq=23&orientation=squarish' },
   ], []);
 
   // Refs
@@ -1451,7 +1451,7 @@ export default function ReviewPage() {
 
   // Placeholder data for new suggestion types
   const sampleGraphics: Suggestion[] = [
-    { id: 'graphic-logo-main', display: 'Main Brand Logo', desc: 'The primary logo appearing at multiple points', type: 'graphic', imageUrl: 'https://readdy.ai/api/search-image?query=modern%20company%20logo%20placeholder&width=100&height=100&seq=g1' },
+    { id: 'graphic-logo-main', display: 'Main Brand Logo', desc: 'The primary logo appearing at multiple points', type: 'graphic', imageUrl: 'https://novocabs.com/api/search-image?query=modern%20company%20logo%20placeholder&width=100&height=100&seq=g1' },
     { id: 'graphic-lowerthird-host1', display: 'Host 1 Lower Third', time: '00:38', desc: 'Lower third graphic for Host 1 introduction', type: 'graphic' },
   ];
 
@@ -1461,12 +1461,12 @@ export default function ReviewPage() {
   ];
 
   const sampleDetectedObjects: Suggestion[] = [
-    { id: 'object-laptop-host2', display: 'Host 2\'s Laptop', time: '10:15', desc: 'Laptop visible on Host 2\'s desk', type: 'object', imageUrl: 'https://readdy.ai/api/search-image?query=laptop%20on%20desk%20close%20up&width=100&height=100&seq=o1' },
+    { id: 'object-laptop-host2', display: 'Host 2\'s Laptop', time: '10:15', desc: 'Laptop visible on Host 2\'s desk', type: 'object', imageUrl: 'https://novocabs.com/api/search-image?query=laptop%20on%20desk%20close%20up&width=100&height=100&seq=o1' },
     { id: 'object-mic-guest', display: 'Guest\'s Microphone', time: '26:00', desc: 'Microphone used by the guest', type: 'object' },
   ];
 
   const sampleDetectedScenes: Suggestion[] = [
-    { id: 'scene-interview-setup', display: 'Main Interview Area', time: '00:30-38:30', desc: 'The primary two-host interview setup', type: 'scene', imageUrl: 'https://readdy.ai/api/search-image?query=podcast%20studio%20wide%20shot&width=100&height=100&seq=s1' },
+    { id: 'scene-interview-setup', display: 'Main Interview Area', time: '00:30-38:30', desc: 'The primary two-host interview setup', type: 'scene', imageUrl: 'https://novocabs.com/api/search-image?query=podcast%20studio%20wide%20shot&width=100&height=100&seq=s1' },
     { id: 'scene-whiteboard-explain', display: 'Whiteboard Explanation', time: '12:05-14:30', desc: 'Segment where host uses a whiteboard', type: 'scene' },
   ];
 
@@ -1660,7 +1660,7 @@ export default function ReviewPage() {
             <div className="container px-4 h-full"> {/* Added h-full for flex child */}
               <div className="video-container relative w-full aspect-video bg-black rounded-lg overflow-hidden shadow-xl h-full"> {/* MODIFIED: Added h-full, though aspect-video might conflict. Let's test. */}
                 <Image 
-                  src="https://readdy.ai/api/search-image?query=professional%20podcast%20recording%20studio%20with%20two%20people%20having%20a%20conversation%2C%20high%20quality%20camera%20setup%2C%20multiple%20angles%2C%20professional%20lighting%2C%20microphones%20visible%2C%20modern%20studio%20environment%2C%20digital%20displays&width=1280&height=720&seq=1&orientation=landscape" 
+                  src="https://novocabs.com/api/search-image?query=professional%20podcast%20recording%20studio%20with%20two%20people%20having%20a%20conversation%2C%20high%20quality%20camera%20setup%2C%20multiple%20angles%2C%20professional%20lighting%2C%20microphones%20visible%2C%20modern%20studio%20environment%2C%20digital%20displays&width=1280&height=720&seq=1&orientation=landscape" 
                   alt="Video preview" 
                   layout="fill"
                   objectFit="cover"
@@ -3153,10 +3153,10 @@ export default function ReviewPage() {
             
             <div className="grid grid-cols-2 gap-3 max-h-[calc(100vh-200px)] overflow-y-auto"> {/* Adjusted max-h for better viewport fitting */}
               {[
-                { id: 'main', name: "Main Camera", type: "Primary video", duration: "1:02:15", img: "https://readdy.ai/api/search-image?query=podcast%20recording%2C%20main%20camera%20angle%2C%20wide%20shot%20of%20two%20hosts&width=160&height=90&seq=8&orientation=landscape" },
-                { id: 'host1', name: "Host 1 Closeup", type: "Angle 2", duration: "1:02:15", img: "https://readdy.ai/api/search-image?query=podcast%20recording%2C%20close%20up%20angle%20of%20host%201%2C%20professional%20lighting&width=160&height=90&seq=9&orientation=landscape" },
-                { id: 'host2', name: "Host 2 Closeup", type: "Angle 3", duration: "1:02:15", img: "https://readdy.ai/api/search-image?query=podcast%20recording%2C%20close%20up%20angle%20of%20host%202%2C%20professional%20lighting&width=160&height=90&seq=10&orientation=landscape" },
-                { id: 'tech', name: "Tech B-Roll", type: "B-Roll", duration: "0:45", img: "https://readdy.ai/api/search-image?query=digital%20technology%20visualization%2C%20abstract%20AI%20concept%2C%20blue%20tones&width=160&height=90&seq=11&orientation=landscape" },
+                { id: 'main', name: "Main Camera", type: "Primary video", duration: "1:02:15", img: "https://novocabs.com/api/search-image?query=podcast%20recording%2C%20main%20camera%20angle%2C%20wide%20shot%20of%20two%20hosts&width=160&height=90&seq=8&orientation=landscape" },
+                { id: 'host1', name: "Host 1 Closeup", type: "Angle 2", duration: "1:02:15", img: "https://novocabs.com/api/search-image?query=podcast%20recording%2C%20close%20up%20angle%20of%20host%201%2C%20professional%20lighting&width=160&height=90&seq=9&orientation=landscape" },
+                { id: 'host2', name: "Host 2 Closeup", type: "Angle 3", duration: "1:02:15", img: "https://novocabs.com/api/search-image?query=podcast%20recording%2C%20close%20up%20angle%20of%20host%202%2C%20professional%20lighting&width=160&height=90&seq=10&orientation=landscape" },
+                { id: 'tech', name: "Tech B-Roll", type: "B-Roll", duration: "0:45", img: "https://novocabs.com/api/search-image?query=digital%20technology%20visualization%2C%20abstract%20AI%20concept%2C%20blue%20tones&width=160&height=90&seq=11&orientation=landscape" },
                 { id: 'audio', name: "Clean Audio", type: "Main Audio", duration: "1:02:15", icon: "ri-volume-up-line" },
                 { id: 'music', name: "Background Music", type: "Audio", duration: "3:20", icon: "ri-music-line" }
               ]

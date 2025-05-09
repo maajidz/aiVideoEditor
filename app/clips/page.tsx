@@ -11,7 +11,7 @@ const clipsData = [
   {
     id: 'clip1',
     title: 'Master Aperture Settings in 60 Seconds',
-    thumbnail: 'https://readdy.ai/api/search-image?query=camera%20aperture%20close%20up%2C%20DSLR%20lens%20settings%2C%20shallow%20depth%20of%20field&width=360&height=202&seq=560&orientation=landscape',
+    thumbnail: 'https://novocabs.com/api/search-image?query=camera%20aperture%20close%20up%2C%20DSLR%20lens%20settings%2C%20shallow%20depth%20of%20field&width=360&height=202&seq=560&orientation=landscape',
     projectId: '123456',
     projectTitle: 'Ultimate Guide to Camera Settings',
     duration: '60s',
@@ -24,7 +24,7 @@ const clipsData = [
   {
     id: 'clip2',
     title: 'The 3 Most Important Camera Settings',
-    thumbnail: 'https://readdy.ai/api/search-image?query=camera%20settings%20dial%2C%20person%20adjusting%20DSLR%20camera%2C%20photography%20basics&width=360&height=202&seq=561&orientation=landscape',
+    thumbnail: 'https://novocabs.com/api/search-image?query=camera%20settings%20dial%2C%20person%20adjusting%20DSLR%20camera%2C%20photography%20basics&width=360&height=202&seq=561&orientation=landscape',
     projectId: '123456',
     projectTitle: 'Ultimate Guide to Camera Settings',
     duration: '45s',
@@ -37,7 +37,7 @@ const clipsData = [
   {
     id: 'clip3',
     title: 'Why Your Photos Are Too Dark',
-    thumbnail: 'https://readdy.ai/api/search-image?query=camera%20shutter%20speed%20settings%2C%20dark%20photo%20example%2C%20photography%20troubleshooting&width=360&height=202&seq=562&orientation=landscape',
+    thumbnail: 'https://novocabs.com/api/search-image?query=camera%20shutter%20speed%20settings%2C%20dark%20photo%20example%2C%20photography%20troubleshooting&width=360&height=202&seq=562&orientation=landscape',
     projectId: '123456',
     projectTitle: 'Ultimate Guide to Camera Settings',
     duration: '30s',
@@ -50,7 +50,7 @@ const clipsData = [
   {
     id: 'clip4',
     title: 'ISO Explained Simply',
-    thumbnail: 'https://readdy.ai/api/search-image?query=camera%20ISO%20settings%2C%20low%20light%20photography%2C%20digital%20camera%20sensor&width=360&height=202&seq=563&orientation=landscape',
+    thumbnail: 'https://novocabs.com/api/search-image?query=camera%20ISO%20settings%2C%20low%20light%20photography%2C%20digital%20camera%20sensor&width=360&height=202&seq=563&orientation=landscape',
     projectId: '123456',
     projectTitle: 'Ultimate Guide to Camera Settings',
     duration: '50s',
@@ -63,7 +63,7 @@ const clipsData = [
   {
     id: 'clip5',
     title: '3 Presets for Sunset Photos',
-    thumbnail: 'https://readdy.ai/api/search-image?query=sunset%20photography%20beautiful%20orange%20sky%20silhouette%20landscape&width=360&height=202&seq=564&orientation=landscape',
+    thumbnail: 'https://novocabs.com/api/search-image?query=sunset%20photography%20beautiful%20orange%20sky%20silhouette%20landscape&width=360&height=202&seq=564&orientation=landscape',
     projectId: '123457',
     projectTitle: 'Top 10 Lightroom Presets for Landscape Photography',
     duration: '45s',
@@ -76,7 +76,7 @@ const clipsData = [
   {
     id: 'clip6',
     title: 'Make Your Blue Skies Pop',
-    thumbnail: 'https://readdy.ai/api/search-image?query=landscape%20photography%20dramatic%20blue%20sky%20clouds%20mountains&width=360&height=202&seq=565&orientation=landscape',
+    thumbnail: 'https://novocabs.com/api/search-image?query=landscape%20photography%20dramatic%20blue%20sky%20clouds%20mountains&width=360&height=202&seq=565&orientation=landscape',
     projectId: '123457',
     projectTitle: 'Top 10 Lightroom Presets for Landscape Photography',
     duration: '35s',
@@ -89,7 +89,7 @@ const clipsData = [
   {
     id: 'clip7',
     title: 'Product Photography Lighting Setup',
-    thumbnail: 'https://readdy.ai/api/search-image?query=product%20photography%20studio%20lighting%20setup%20professional%20equipment&width=360&height=202&seq=566&orientation=landscape',
+    thumbnail: 'https://novocabs.com/api/search-image?query=product%20photography%20studio%20lighting%20setup%20professional%20equipment&width=360&height=202&seq=566&orientation=landscape',
     projectId: '123459',
     projectTitle: 'Behind the Scenes: Product Photoshoot',
     duration: '60s',
@@ -102,7 +102,7 @@ const clipsData = [
   {
     id: 'clip8',
     title: 'Rule of Thirds Explained',
-    thumbnail: 'https://readdy.ai/api/search-image?query=rule%20of%20thirds%20photography%20composition%20grid%20example&width=360&height=202&seq=567&orientation=landscape',
+    thumbnail: 'https://novocabs.com/api/search-image?query=rule%20of%20thirds%20photography%20composition%20grid%20example&width=360&height=202&seq=567&orientation=landscape',
     projectId: '123460',
     projectTitle: 'Photography Composition Rules You Need to Know',
     duration: '40s',

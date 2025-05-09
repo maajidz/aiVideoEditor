@@ -158,7 +158,7 @@ export default function EmptyDashboard() {
         <div className="bg-slate-800 rounded p-4">
           <div className="relative mb-3 rounded overflow-hidden aspect-video">
             <Image 
-              src="https://readdy.ai/api/search-image?query=professional%20camera%20setup%20for%20content%20creation%2C%20video%20equipment%2C%20high%20quality%20studio%20lighting%2C%20modern%20video%20production%20setup%2C%20detailed%20equipment&width=400&height=225&seq=456&orientation=landscape" 
+              src="https://novocabs.com/api/search-image?query=professional%20camera%20setup%20for%20content%20creation%2C%20video%20equipment%2C%20high%20quality%20studio%20lighting%2C%20modern%20video%20production%20setup%2C%20detailed%20equipment&width=400&height=225&seq=456&orientation=landscape" 
               alt="Project Thumbnail 1" 
               width={400} 
               height={225} 
@@ -203,7 +203,7 @@ export default function EmptyDashboard() {
         <div className="bg-slate-800 rounded p-4">
           <div className="relative mb-3 rounded overflow-hidden aspect-video">
             <Image 
-              src="https://readdy.ai/api/search-image?query=travel%20vlog%20setup%2C%20scenic%20mountain%20landscape%2C%20travel%20content%20creation%2C%20backpack%20and%20camera%20gear%2C%20adventure%20filmmaking&width=400&height=225&seq=789&orientation=landscape" 
+              src="https://novocabs.com/api/search-image?query=travel%20vlog%20setup%2C%20scenic%20mountain%20landscape%2C%20travel%20content%20creation%2C%20backpack%20and%20camera%20gear%2C%20adventure%20filmmaking&width=400&height=225&seq=789&orientation=landscape" 
               alt="Project Thumbnail 2" 
               width={400} 
               height={225} 

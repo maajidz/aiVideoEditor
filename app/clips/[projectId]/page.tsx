@@ -12,7 +12,7 @@ const clipData = {
   clipId: 'clip1',
   clipTitle: 'Master Aperture Settings in 60 Seconds',
   originalDuration: '01:00',
-  videoSrc: 'https://readdy.ai/api/search-image?query=professional%2520podcast%2520recording%2520studio%2520with%2520two%2520people%2520having%2520a%2520conversation%252C%2520high%2520quality%2520camera%2520setup%252C%2520multiple%2520angles%252C%2520professional%2520lighting%252C%2520microphones%2520visible%252C%2520modern%2520studio%2520environment%252C%2520digital%2520displays&width=1280&height=720&seq=1&orientation=landscape',
+  videoSrc: 'https://novocabs.com/api/search-image?query=professional%2520podcast%2520recording%2520studio%2520with%2520two%2520people%2520having%2520a%2520conversation%252C%2520high%2520quality%2520camera%2520setup%252C%2520multiple%2520angles%252C%2520professional%2520lighting%252C%2520microphones%2520visible%252C%2520modern%2520studio%2520environment%252C%2520digital%2520displays&width=1280&height=720&seq=1&orientation=landscape',
   selectedTimeRange: {
     start: '12:34',
     end: '13:04',
@@ -51,7 +51,7 @@ const clipData = {
       title: 'Key Point on AI Ethics',
       duration: '15s',
       platform: 'Instagram',
-      thumbnail: 'https://readdy.ai/api/search-image?query=podcast%2520host%2520making%2520an%2520excited%2520gesture%2520while%2520discussing%2520AI%2520technology%252C%2520close%2520up%2520shot%252C%2520professional%2520lighting&width=120&height=68&seq=18&orientation=landscape',
+      thumbnail: 'https://novocabs.com/api/search-image?query=podcast%2520host%2520making%2520an%2520excited%2520gesture%2520while%2520discussing%2520AI%2520technology%252C%2520close%2520up%2520shot%252C%2520professional%2520lighting&width=120&height=68&seq=18&orientation=landscape',
       status: 'ready', // 'ready', 'processing', 'queued'
     },
     {
@@ -59,7 +59,7 @@ const clipData = {
       title: 'Future of Content Creation',
       duration: '30s',
       platform: 'TikTok',
-      thumbnail: 'https://readdy.ai/api/search-image?query=podcast%2520guest%2520explaining%2520concept%2520with%2520hand%2520gestures%252C%2520animated%2520expression%252C%2520professional%2520studio%2520lighting&width=120&height=68&seq=19&orientation=landscape',
+      thumbnail: 'https://novocabs.com/api/search-image?query=podcast%2520guest%2520explaining%2520concept%2520with%2520hand%2520gestures%252C%2520animated%2520expression%252C%2520professional%2520studio%2520lighting&width=120&height=68&seq=19&orientation=landscape',
       status: 'processing',
     },
     {
@@ -67,7 +67,7 @@ const clipData = {
       title: 'Humorous Anecdote',
       duration: '30s',
       platform: 'Instagram',
-      thumbnail: 'https://readdy.ai/api/search-image?query=podcast%2520hosts%2520laughing%2520together%252C%2520candid%2520moment%252C%2520wide%2520shot%2520showing%2520both%2520hosts%252C%2520professional%2520studio%2520lighting&width=120&height=68&seq=20&orientation=landscape',
+      thumbnail: 'https://novocabs.com/api/search-image?query=podcast%2520hosts%2520laughing%2520together%252C%2520candid%2520moment%252C%2520wide%2520shot%2520showing%2520both%2520hosts%252C%2520professional%2520studio%2520lighting&width=120&height=68&seq=20&orientation=landscape',
       status: 'queued',
     },
   ],
@@ -374,7 +374,7 @@ export default function ClipEditorPage() {
                         <div key={i} className="bg-slate-800 rounded overflow-hidden cursor-pointer hover:shadow-lg transition">
                           <div className="relative aspect-video">
                             <Image 
-                              src={`https://readdy.ai/api/search-image?query=podcast%2520host%2520making%2520an%2520excited%2520gesture%2520while%2520discussing%2520AI%2520technology%252C%2520close%2520up%2520shot%252C%2520professional%2520lighting&width=300&height=169&seq=${13 + i}&orientation=landscape`} 
+                              src={`https://novocabs.com/api/search-image?query=podcast%2520host%2520making%2520an%2520excited%2520gesture%2520while%2520discussing%2520AI%2520technology%252C%2520close%2520up%2520shot%252C%2520professional%2520lighting&width=300&height=169&seq=${13 + i}&orientation=landscape`} 
                               alt={`Highlight ${i + 1}`} 
                               width={300}
                               height={169}

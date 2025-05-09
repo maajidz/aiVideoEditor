@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "readdy.ai",
+        hostname: "novocabs.com",
         port: "",
         pathname: "/api/search-image/**", // Or a more general path if needed
       },
